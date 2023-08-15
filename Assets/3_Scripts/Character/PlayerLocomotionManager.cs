@@ -23,6 +23,8 @@ public class PlayerLocomotionManager : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
     }
 
+    
+
     public void HandleAllMovement()
     {
         HandleGroundedMovement();
