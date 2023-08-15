@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     private PlayerLocomotionManager playerLocomotionManager;
     public CharacterController characterController;
+    public AttributeSet attributeSet;
     
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerManager : MonoBehaviour
         
         playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
         characterController = GetComponent<CharacterController>();
+        attributeSet = GetComponent<AttributeSet>();
 
     }
 

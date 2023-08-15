@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
@@ -17,6 +18,7 @@ public class MainMenu : MonoBehaviour
     private void JoinMultiplayerGame()
     {
         // TODO Add code for joining a room here
+        SceneManager.LoadScene("0_Scenes/SampleScene"); // REQUIRES THE SCENE TO BE IN  THE BUILD FILE > BUILD SETTINGS > SCENES
     }
 
 }
