@@ -3,8 +3,8 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     public static PlayerCamera instance;
-    public PlayerManager playerManager;
-    public float cameraHeight = 10.0f; 
+    public PlayerManager playerManager; // not working idk why
+    public float cameraHeight = 12.0f; 
     public float cameraAngle = 60.0f; 
 
     private void Awake()
