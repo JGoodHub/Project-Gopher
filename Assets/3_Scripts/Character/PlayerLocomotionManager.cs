@@ -18,16 +18,20 @@ public class PlayerLocomotionManager : MonoBehaviour
     [SerializeField] private float RunningSpeed = 5.0f;
     [SerializeField] private float RotationSpeed = 15.0f;
 
+    [SerializeField] private Space _movementScope;
+    [SerializeField] private bool _lockY;
+
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
     }
 
-    
 
     public void HandleAllMovement()
     {
         HandleGroundedMovement();
+
+        HandleRotationMovement();
     }
 
     private void GetMovementValues()
@@ -41,12 +45,21 @@ public class PlayerLocomotionManager : MonoBehaviour
     {
         // Currently just takes player transform to determine move direction
         GetMovementValues();
-        MoveDirection = transform.forward * VerticalMovement;
-        MoveDirection += transform.right * HorizontalMovement;
+
+        if (_movementScope == Space.Self)
+        {
+            MoveDirection = transform.forward * VerticalMovement;
+            MoveDirection += transform.right * HorizontalMovement;
+        }
+        else
+        {
+            MoveDirection = Vector3.forward * VerticalMovement;
+            MoveDirection += Vector3.right * HorizontalMovement;
+        }
+
         MoveDirection.Normalize();
         MoveDirection.y = 0;
-        
-        
+
         if (MoveAmount > 0.5f)
         {
             playerManager.characterController.Move(MoveDirection * RunningSpeed * Time.deltaTime);
@@ -55,5 +68,17 @@ public class PlayerLocomotionManager : MonoBehaviour
         {
             playerManager.characterController.Move(MoveDirection * WalkingSpeed * Time.deltaTime);
         }
+
+        if (_lockY)
+        {
+            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+        }
+    }
+
+    private void HandleRotationMovement()
+    {
+        Vector3 mousePosition = RaycastPlane.QueryPlane();
+
+        playerManager.characterController.transform.LookAt(mousePosition, Vector3.up);
     }
 }
