@@ -12,6 +12,8 @@ public class BallAndChainTracker : MonoBehaviour
     [SerializeField] private float _tapsRequiredToRemove;
     [SerializeField] private float _tapsMinInterval;
     [SerializeField] private float _tapsExpiration;
+    [Space]
+    [SerializeField] private ParticleSystem _hammerParticleSystem;
 
     private int _tapCount;
     private float _tapIntervalCooldown;
@@ -37,11 +39,13 @@ public class BallAndChainTracker : MonoBehaviour
         if (_tapResetCooldown <= 0)
             _tapCount = 0;
 
-        if (Input.GetButtonDown("Jump") && _tapIntervalCooldown <= 0)
+        if (Input.GetButtonDown("Jump") && _tapIntervalCooldown <= 0 && _attachedChains.Count > 0)
         {
             _tapCount++;
             _tapIntervalCooldown = _tapsMinInterval;
             _tapResetCooldown = _tapsExpiration;
+            
+            _hammerParticleSystem.Emit(1);
         }
 
         if (_tapCount >= _tapsRequiredToRemove)
