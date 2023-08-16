@@ -16,7 +16,6 @@ public class BallAndChainTracker : MonoBehaviour
     {
         AddChain();
         AddChain();
-        AddChain();
     }
 
     public void AddChain()
