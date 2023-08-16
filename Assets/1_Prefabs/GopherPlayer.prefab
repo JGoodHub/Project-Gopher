@@ -1027,6 +1027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 8391855073969680778}
+  attributeSet: {fileID: 0}
 --- !u!114 &5139295991804079833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,7 +1078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chainPrefab: {fileID: 7007142749523912000, guid: dfff43f7265fbcf4994ac3d621033274, type: 3}
-  _range: 10
+  _range: 12
 --- !u!114 &4595716665541129225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,6 +1093,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ballAndChainPrefab: {fileID: 205110591073207100, guid: 249a8b0d2ac807049ac8c2df8371531f, type: 3}
   _attachHeight: 0.5
+  _tapsRequiredToRemove: 10
+  _tapsMinInterval: 0.05
+  _tapsExpiration: 1
 --- !u!1 &4470164093591359349
 GameObject:
   m_ObjectHideFlags: 0

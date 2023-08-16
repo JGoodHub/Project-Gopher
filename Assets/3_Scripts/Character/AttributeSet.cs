@@ -7,25 +7,25 @@ using UnityEngine.Android;
 
 public class AttributeSet : MonoBehaviour
 {
-    [SerializeField] private float BaseHealth = 100;
-    [SerializeField] private float MaxHealth = 500; 
-    [SerializeField] private float Health;
+    [SerializeField] private float _baseHealth = 100;
+    [SerializeField] private float _maxHealth = 500;
 
-    [SerializeField] private int HeldChains = 2;
-    [SerializeField] private int MaxChains = 5; // Maybe
+    public int heldChains = 2;
+    public int maxHeldChains = 5;
 
-    private int Dashes = 2;
-    private int MaxDashes = 2; // maybe powerups can alter this
-    
+    private int _dashes = 2;
+    private int _maxDashes = 2; // maybe power-ups can alter this
+
+    private float _health;
 
     private void Start()
     {
-        Health = BaseHealth;
+        _health = _baseHealth;
     }
 
     private void Update()
     {
-        MaxHealth = BaseHealth * MaxChains;
+        _maxHealth = _baseHealth * heldChains;
     }
 
     private void Die()
@@ -39,12 +39,12 @@ public class AttributeSet : MonoBehaviour
 
     private bool IsAlive()
     {
-        return Health > 0;
+        return _health > 0;
     }
 
     public float GetHealthPercentage()
     {
-        return Health / MaxHealth; // I think progress bars in unity prefer a 0.0 - 1.0 scale if not * 100.0f
+        return _health / _maxHealth; // I think progress bars in unity prefer a 0.0 - 1.0 scale if not * 100.0f
     }
     
 }
