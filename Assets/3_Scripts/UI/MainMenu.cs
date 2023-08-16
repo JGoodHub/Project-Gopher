@@ -18,7 +18,7 @@ public class MainMenu : MonoBehaviour
     private void JoinMultiplayerGame()
     {
         // TODO Add code for joining a room here
-        SceneManager.LoadScene("0_Scenes/SampleScene"); // REQUIRES THE SCENE TO BE IN  THE BUILD FILE > BUILD SETTINGS > SCENES
+        SceneManager.LoadScene("0_Scenes/Arena"); // REQUIRES THE SCENE TO BE IN  THE BUILD FILE > BUILD SETTINGS > SCENES
     }
 
 }
