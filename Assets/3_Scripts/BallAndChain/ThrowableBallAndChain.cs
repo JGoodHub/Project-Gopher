@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class ThrowableBallAndChain : MonoBehaviour
 {
-
     [SerializeField] private float _startHeight = 0.5f;
     [SerializeField] private float _speed;
 
@@ -39,16 +38,24 @@ public class ThrowableBallAndChain : MonoBehaviour
 
     private void HandleMissedShot()
     {
-        Destroy(gameObject);
+        PickupsController.Singleton.SpawnPickup(Pickup.Type.Ammo, new Vector3(transform.position.x, 0f, transform.position.z));
+
+        Destroy(gameObject, 0.02f);
 
         // TODO Handle spawning a networked pickup-able chain item 
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // TODO Check we hit a different player
+        if (other.CompareTag("OtherPlayers"))
+        {
+            // TODO Damage the other player and attached a chain
+            return;
+        }
 
-        // TODO Add networked RPC to add a chain to the hit player
+        if (other.CompareTag("Terrain"))
+        {
+            HandleMissedShot();
+        }
     }
-
 }

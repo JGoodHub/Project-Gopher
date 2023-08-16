@@ -5,13 +5,19 @@ using UnityEngine;
 
 public class BallAndChainThrower : MonoBehaviour
 {
-
     [SerializeField] private GameObject _chainPrefab;
     [SerializeField] private float _range;
 
+    private AttributeSet _attributeSet;
+
+    private void Start()
+    {
+        _attributeSet = GetComponent<AttributeSet>();
+    }
+
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && _attributeSet.heldChains > 0)
         {
             Vector3 target = RaycastPlane.QueryPlane();
 
@@ -25,9 +31,9 @@ public class BallAndChainThrower : MonoBehaviour
 
         Vector3 startPosition = new Vector3(transform.position.x, 0, transform.position.z);
         Vector3 endPosition = (target - startPosition).normalized * _range;
-        
-        chain.Initialise(startPosition, endPosition);
-        //chain.SetInitialPosition(startPosition);
-    }
 
+        chain.Initialise(startPosition, endPosition);
+
+        _attributeSet.heldChains--;
+    }
 }

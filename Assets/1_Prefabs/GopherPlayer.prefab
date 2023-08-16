@@ -959,15 +959,18 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7476149181650233841}
+  - component: {fileID: 9083096032209675866}
+  - component: {fileID: 5648499095729122039}
   - component: {fileID: 8391855073969680778}
   - component: {fileID: 127297994505697655}
   - component: {fileID: 5139295991804079833}
   - component: {fileID: 1185417480075189138}
   - component: {fileID: 2221205392477676937}
   - component: {fileID: 4595716665541129225}
+  - component: {fileID: 6512117526970127037}
   m_Layer: 0
   m_Name: GopherPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -988,6 +991,56 @@ Transform:
   - {fileID: 6898792605819310101}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &9083096032209675866
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
+--- !u!136 &5648499095729122039
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!143 &8391855073969680778
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1027,6 +1080,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 8391855073969680778}
+  attributeSet: {fileID: 6512117526970127037}
 --- !u!114 &5139295991804079833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1077,7 +1131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _chainPrefab: {fileID: 7007142749523912000, guid: dfff43f7265fbcf4994ac3d621033274, type: 3}
-  _range: 10
+  _range: 12
 --- !u!114 &4595716665541129225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1091,7 +1145,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _ballAndChainPrefab: {fileID: 205110591073207100, guid: 249a8b0d2ac807049ac8c2df8371531f, type: 3}
-  _attachHeight: 0.5
+  _maxAttachedChains: 5
+  _tapsRequiredToRemove: 10
+  _tapsMinInterval: 0.05
+  _tapsExpiration: 1
+--- !u!114 &6512117526970127037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5814441560ec0442b41093940643289, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _baseHealth: 100
+  _maxHealth: 500
+  heldChains: 2
+  maxHeldChains: 5
 --- !u!1 &4470164093591359349
 GameObject:
   m_ObjectHideFlags: 0
