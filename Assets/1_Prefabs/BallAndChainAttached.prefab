@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 687374219512302765}
-  - component: {fileID: 7837205222009458722}
   - component: {fileID: 78670306104888147}
   m_Layer: 0
   m_Name: BallAndChainAttached
@@ -40,30 +39,6 @@ Transform:
   - {fileID: 3278915163726353729}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7837205222009458722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205110591073207100}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40521bd991e9cfb469a9421a6dfa497d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _links:
-  - {fileID: 3337518179257525757}
-  - {fileID: 2573428800548951876}
-  - {fileID: 6242365062981183429}
-  - {fileID: 2208157607414247867}
-  - {fileID: 3278915163726353729}
-  _linksLengths:
-  - 0.25
-  - 0.25
-  - 0.25
-  - 0.61
-  _runInGizmos: 1
 --- !u!114 &78670306104888147
 MonoBehaviour:
   m_ObjectHideFlags: 0

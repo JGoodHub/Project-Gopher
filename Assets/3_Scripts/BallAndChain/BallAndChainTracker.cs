@@ -79,7 +79,9 @@ public class BallAndChainTracker : MonoBehaviour
         Destroy(_attachedChains[0].gameObject);
         _attachedChains.RemoveAt(0);
 
-        if (_attributeSet.heldChains < _attributeSet.maxHeldChains)
+        if (_attributeSet.AreChainsMaxedOut())
+            PickupsController.Singleton.SpawnPickup(Pickup.Type.Ammo, Quaternion.Euler(0, Random.Range(0f, 360f), 0) * Vector3.forward * 1.5f);
+        else
             _attributeSet.heldChains++;
     }
 }

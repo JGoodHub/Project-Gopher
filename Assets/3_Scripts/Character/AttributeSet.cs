@@ -46,5 +46,10 @@ public class AttributeSet : MonoBehaviour
     {
         return _health / _maxHealth; // I think progress bars in unity prefer a 0.0 - 1.0 scale if not * 100.0f
     }
+
+    public bool AreChainsMaxedOut()
+    {
+        return heldChains >= maxHeldChains;
+    }
     
 }

@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 687374219512302765}
-  - component: {fileID: 7825316625025669915}
   - component: {fileID: 7153485383787512021}
+  - component: {fileID: 3066510774468655756}
   m_Layer: 0
   m_Name: BallAndChainPickup
   m_TagString: Untagged
@@ -35,22 +35,6 @@ Transform:
   - {fileID: 2669913180789742618}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7825316625025669915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205110591073207100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf370e881f1394882b06b3f3a32eadeb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pickupRoot: {fileID: 4768259503519100537}
-  _bobRate: 1.2
-  _bobRange: 0.15
-  _spinRate: 50
 --- !u!135 &7153485383787512021
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -66,12 +50,28 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1
   m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!114 &3066510774468655756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205110591073207100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff35be1a3f8343fdbb3263864bd090e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pickupRoot: {fileID: 4768259503519100537}
+  _bobRate: 1.2
+  _bobRange: 0.15
+  _spinRate: 50
 --- !u!1 &959397324236722141
 GameObject:
   m_ObjectHideFlags: 0
