@@ -7,8 +7,8 @@ using UnityEngine.Android;
 
 public class AttributeSet : MonoBehaviour
 {
-    [SerializeField] private float BaseHealth = 100;
-    [SerializeField] private float MaxHealth = 500; 
+    [SerializeField] private float BaseHealth = 100.0f;
+    [SerializeField] private float MaxHealth = 500.0f; 
     [SerializeField] private float Health;
 
     [SerializeField] private int HeldChains = 2;
