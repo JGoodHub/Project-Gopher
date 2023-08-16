@@ -9,9 +9,12 @@ public class RoundManager : MonoBehaviour
     [SerializeField] private bool isTimerActive = false;
     private const float MaxRoundTimer = 60.0f;
 
+    private UpdatePitfallTimer _updatePitfallTimer;
     private void Start()
     {
+        _updatePitfallTimer = FindObjectOfType<UpdatePitfallTimer>();
         RoundStartTimer();
+        _updatePitfallTimer.EnableTimer();
     }
 
     private void Update()
@@ -48,8 +51,11 @@ public class RoundManager : MonoBehaviour
 
     private void EndRound()
     {
+        Pitfall.instance.OpenPitfall();
         RoundEndTimer();
         ResetTimer();
     }
+    
+    
 }
 
