@@ -73,3 +73,16 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+
+# HathoraServerConfig: !ignore template, ignore others
+HathoraServerConfig*.asset*
+!HathoraServerConfig*.template.asset*
+
+# Ignore .tar.gz files or WIP files (.tar, .temp)
+**/.hathora/*.tar*
+**/.hathora/*.temp*
+src/Assets/Hathora/Core/Scripts/Editor/Common/SuperSave.*
+*.*~
+src/.hathora/LocalContainer
+Build-Server/
