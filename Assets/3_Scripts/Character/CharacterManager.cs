@@ -52,4 +52,6 @@ public class CharacterManager : NetworkBehaviour
                 _playerNetworkManager.NetworkRotationSmoothTime);
         }
     }
+
+    
 }
