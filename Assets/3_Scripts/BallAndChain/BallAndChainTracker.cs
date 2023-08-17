@@ -22,8 +22,10 @@ public class BallAndChainTracker : MonoBehaviour
     private List<Transform> _attachedChains = new List<Transform>();
     private AttributeSet _attributeSet;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        // small delay to fix weird initial chain physics (they sank below the ground)
+        yield return new WaitForSeconds(0.5f);
         _attributeSet = GetComponent<AttributeSet>();
         _attributeSet.onHeldChainsChanged += UpdateChains;
 

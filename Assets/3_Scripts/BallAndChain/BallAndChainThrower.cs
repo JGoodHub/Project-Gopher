@@ -38,7 +38,8 @@ public class BallAndChainThrower : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(startPosition, direction, out hit, _range))
         {
-            if (hit.collider.gameObject.tag != "Player" && hit.collider.gameObject.tag != "OtherPlayers")
+            if (hit.collider.gameObject.tag != "Player" && hit.collider.gameObject.tag != "OtherPlayers"
+                && hit.collider.gameObject.tag != "Grid")
             {
                 endPosition = hit.point;
             }
