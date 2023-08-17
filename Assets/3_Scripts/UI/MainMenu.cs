@@ -11,10 +11,10 @@ public class MainMenu : MonoBehaviour
     public enum MenuPanel
     {
 
-        Play,
+        Splash,
         LobbySelection,
-        CreateLobby,
-        RoomViewer,
+        LobbyCreator,
+        LobbyViewer,
         LoadingMatch
 
     }
@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour
 
     [Header("Splash")]
     [SerializeField] private Button _startButton;
+    [SerializeField] private TMP_InputField _playerNameField;
 
     [Header("Lobby Selection")]
     [SerializeField] private RectTransform _lobbyItemsContainer;
@@ -49,8 +50,13 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        SetActivePanel(MenuPanel.Splash);
+
         _startButton.onClick.AddListener(GoToLobbySelectionPanel);
+
         _openLobbyCreatorButton.onClick.AddListener(GetToLobbyCreationPanel);
+
+        _backToLobbySelectionButton.onClick.AddListener(() => SetActivePanel(MenuPanel.LobbySelection));
     }
 
     private void GoToLobbySelectionPanel()
@@ -63,22 +69,22 @@ public class MainMenu : MonoBehaviour
 
     private void JoinRoom()
     {
-        SetActivePanel(MenuPanel.RoomViewer);
+        SetActivePanel(MenuPanel.LobbyViewer);
 
         // Code here to create a player item for each person in the lobby
     }
 
     private void GetToLobbyCreationPanel()
     {
-        SetActivePanel(MenuPanel.CreateLobby);
+        SetActivePanel(MenuPanel.LobbyCreator);
     }
 
     private void SetActivePanel(MenuPanel menuPanel)
     {
-        _splashPanel.SetActive(menuPanel == MenuPanel.Play);
+        _splashPanel.SetActive(menuPanel == MenuPanel.Splash);
         _lobbySelectionPanel.SetActive(menuPanel == MenuPanel.LobbySelection);
-        _lobbyCreatorPanel.SetActive(menuPanel == MenuPanel.CreateLobby);
-        _lobbyViewerPanel.SetActive(menuPanel == MenuPanel.RoomViewer);
+        _lobbyCreatorPanel.SetActive(menuPanel == MenuPanel.LobbyCreator);
+        _lobbyViewerPanel.SetActive(menuPanel == MenuPanel.LobbyViewer);
     }
 
     private void LoadArena()
