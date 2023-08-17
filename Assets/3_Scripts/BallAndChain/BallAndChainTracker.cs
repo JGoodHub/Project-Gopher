@@ -18,17 +18,23 @@ public class BallAndChainTracker : MonoBehaviour
     private int _tapCount;
     private float _tapIntervalCooldown;
     private float _tapResetCooldown;
-
+    
     private List<Transform> _attachedChains = new List<Transform>();
+    private CharacterLocomotionManager characterLocomotionManager;
     private AttributeSet _attributeSet;
 
-
-    private void Start()
+    private IEnumerator Start()
     {
+        // small delay to fix weird initial chain physics (they sank below the ground)
+        yield return new WaitForSeconds(0.5f);
+        characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         _attributeSet = GetComponent<AttributeSet>();
+        _attributeSet.onHeldChainsChanged += UpdateChains;
 
-        AddChain();
-        AddChain();
+        for (int i = 0; i < _attributeSet.heldChains; i++)
+        {
+            AddChain();
+        }
     }
 
     private void Update()
@@ -51,6 +57,7 @@ public class BallAndChainTracker : MonoBehaviour
         if (_tapCount >= _tapsRequiredToRemove)
         {
             RemoveChain();
+            
             _tapCount = 0;
 
             _tapIntervalCooldown = _tapsMinInterval;
@@ -73,6 +80,7 @@ public class BallAndChainTracker : MonoBehaviour
 
         Transform chainTransform = Instantiate(_ballAndChainPrefab, attachPosition, Quaternion.Euler(0, _attachedChains.Count * 144, 0), transform).transform;
         _attachedChains.Add(chainTransform);
+        characterLocomotionManager.RunningSpeed -= 1f;
     }
 
     public void RemoveChain()
@@ -82,10 +90,18 @@ public class BallAndChainTracker : MonoBehaviour
 
         Destroy(_attachedChains[0].gameObject);
         _attachedChains.RemoveAt(0);
+        characterLocomotionManager.RunningSpeed += 1f;
+    }
 
-        if (_attributeSet.AreChainsMaxedOut())
-            PickupsManager.Singleton.SpawnPickup(Pickup.Type.Ammo, Quaternion.Euler(0, Random.Range(0f, 360f), 0) * Vector3.forward * 1.5f);
-        else
-            _attributeSet.heldChains++;
+    private void UpdateChains(int newHeldChains)
+    {
+        while (_attachedChains.Count < newHeldChains)
+        {
+            AddChain();
+        }
+        while (_attachedChains.Count > newHeldChains)
+        {
+            RemoveChain();
+        }
     }
 }

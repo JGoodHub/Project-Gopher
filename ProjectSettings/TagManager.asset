@@ -6,6 +6,7 @@ TagManager:
   tags:
   - OtherPlayers
   - Terrain
+  - Grid
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ using UnityEngine;
 public abstract class CharacterLocomotionManager : MonoBehaviour
 {
     protected CharacterManager characterManager;
+    
 
     [Header("Movement Values")] // These do not have to be here but I like having a copy to use
     public float HorizontalMovement;
@@ -14,9 +15,11 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     private Vector3 MoveDirection;
 
-    [SerializeField] private float WalkingSpeed = 2.0f;
-    [SerializeField] private float RunningSpeed = 5.0f;
+    [SerializeField] public float WalkingSpeed = 2.5f;
+    [SerializeField] public float RunningSpeed = 5.0f;
     [SerializeField] private float RotationSpeed = 15.0f;
+    private const float gravity = -9.81f;
+    private const float groundOffset = 0.1f;
 
     [SerializeField] private Space _movementScope;
     [SerializeField] private bool _lockY;
@@ -35,11 +38,11 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     protected abstract void GetMovementValues();
 
+    private float verticalVelocity = 0f;
+
     private void HandleGroundedMovement()
     {
-        // Currently just takes player transform to determine move direction
         GetMovementValues();
-
         if (_movementScope == Space.Self)
         {
             MoveDirection = transform.forward * VerticalMovement;
@@ -52,20 +55,26 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
         }
 
         MoveDirection.Normalize();
-        MoveDirection.y = 0;
+        
+        // gravity
+        if(characterManager.characterController.isGrounded)
+        {
+            verticalVelocity = -groundOffset;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+
+        Vector3 combinedMove = MoveDirection + Vector3.up * verticalVelocity;
 
         if (MoveAmount > 0.5f)
         {
-            characterManager.characterController.Move(MoveDirection * RunningSpeed * Time.deltaTime);
+            characterManager.characterController.Move(combinedMove * RunningSpeed * Time.deltaTime);
         }
         else if (MoveAmount <= 0.5f)
         {
-            characterManager.characterController.Move(MoveDirection * WalkingSpeed * Time.deltaTime);
-        }
-
-        if (_lockY)
-        {
-            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+            characterManager.characterController.Move(combinedMove * WalkingSpeed * Time.deltaTime);
         }
     }
 
