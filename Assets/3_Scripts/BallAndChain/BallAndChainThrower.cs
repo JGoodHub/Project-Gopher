@@ -32,7 +32,17 @@ public class BallAndChainThrower : MonoBehaviour
         ThrowableBallAndChain chain = Instantiate(_chainPrefab).GetComponent<ThrowableBallAndChain>();
 
         Vector3 startPosition = new Vector3(transform.position.x, 0, transform.position.z);
-        Vector3 endPosition = startPosition + ((target - startPosition).normalized * _range);
+        Vector3 direction = (target - startPosition).normalized;
+        Vector3 endPosition = startPosition + direction * _range;
+
+        RaycastHit hit;
+        if (Physics.Raycast(startPosition, direction, out hit, _range))
+        {
+            if (hit.collider.gameObject.tag != "Player" && hit.collider.gameObject.tag != "OtherPlayers")
+            {
+                endPosition = hit.point;
+            }
+        }
 
         Debug.DrawLine(startPosition, endPosition, Color.red, 5f);
 
