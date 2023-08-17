@@ -27,9 +27,9 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     private void Awake()
     {
-        characterManager = GetComponent<CharacterManager>();
+        characterManager = GetComponent<PlayerManager>();
     }
-
+    
 
     public void HandleAllMovement()
     {

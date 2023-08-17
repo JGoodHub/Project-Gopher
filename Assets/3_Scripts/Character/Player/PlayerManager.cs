@@ -6,35 +6,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-<<<<<<< HEAD:Assets/3_Scripts/Character/Player/PlayerManager.cs
 public class PlayerManager : CharacterManager
 {
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
-=======
-public class PlayerManager : NetworkBehaviour
-{
-    // public static PlayerManager instance;
-    private PlayerLocomotionManager playerLocomotionManager;
-    public CharacterController characterController;
-    private PlayerNetworkManager _playerNetworkManager;
+
     private PlayerCamera _playerCamera;
-    public AttributeSet attributeSet;
+    private PlayerLocomotionManager _playerLocomotionManager;
 
-   
-    
-    private void Awake()
+    protected override void Awake()
     {
-
+        base.Awake();
         // if (instance == null)
         // {
         //     instance = this;
@@ -44,49 +24,22 @@ public class PlayerManager : NetworkBehaviour
         //     Destroy(gameObject);
         // }
         
-        DontDestroyOnLoad(this);
-       
-        playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
->>>>>>> adc1eed (Networking Progress):Assets/3_Scripts/Character/PlayerManager.cs
-        characterController = GetComponent<CharacterController>();
-        _playerNetworkManager = GetComponent<PlayerNetworkManager>();
         _playerCamera = GetComponentInChildren<PlayerCamera>();
-        attributeSet = GetComponent<AttributeSet>();
-<<<<<<< HEAD:Assets/3_Scripts/Character/Player/PlayerManager.cs
-=======
-        
-
+        _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
     }
 
     private void Start()
     {
         // PlayerCamera.instance.playerManager = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    private void Update()
+    protected override void Update()
     {
-        if (IsOwner)
-        {
-            playerLocomotionManager.HandleAllMovement();
-            _playerCamera.AttachToPlayerAndFollow();
-        }
-        UpdateNetworkVariables();
+        base.Update();
+        _playerLocomotionManager.HandleAllMovement();
+        _playerCamera.AttachToPlayerAndFollow();
     }
 
-    private void UpdateNetworkVariables()
-    {
-        if (IsOwner)
-        {
-            _playerNetworkManager.NetworkPosition.Value = transform.position;
-            _playerNetworkManager.NetworkRotation.Value = transform.rotation;
-        }
-        else
-        {
-            transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
-                ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
-            
-            transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value, _playerNetworkManager.NetworkRotationSmoothTime);
-        }
->>>>>>> adc1eed (Networking Progress):Assets/3_Scripts/Character/PlayerManager.cs
-    }
+   
 }
