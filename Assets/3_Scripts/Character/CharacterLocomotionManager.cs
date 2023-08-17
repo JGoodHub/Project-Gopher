@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLocomotionManager : MonoBehaviour
+public abstract class CharacterLocomotionManager : MonoBehaviour
 {
-    private PlayerManager playerManager;
+    protected CharacterManager characterManager;
 
     [Header("Movement Values")] // These do not have to be here but I like having a copy to use
     public float HorizontalMovement;
@@ -23,7 +23,7 @@ public class PlayerLocomotionManager : MonoBehaviour
 
     private void Awake()
     {
-        playerManager = GetComponent<PlayerManager>();
+        characterManager = GetComponent<CharacterManager>();
     }
 
 
@@ -33,12 +33,7 @@ public class PlayerLocomotionManager : MonoBehaviour
         HandleRotationMovement();
     }
 
-    private void GetMovementValues()
-    {
-        HorizontalMovement = PlayerInputManager.instance.HorizontalInput;
-        VerticalMovement = PlayerInputManager.instance.VerticalInput;
-        MoveAmount = PlayerInputManager.instance.MoveAmount;
-    }
+    protected abstract void GetMovementValues();
 
     private void HandleGroundedMovement()
     {
@@ -61,11 +56,11 @@ public class PlayerLocomotionManager : MonoBehaviour
 
         if (MoveAmount > 0.5f)
         {
-            playerManager.characterController.Move(MoveDirection * RunningSpeed * Time.deltaTime);
+            characterManager.characterController.Move(MoveDirection * RunningSpeed * Time.deltaTime);
         }
         else if (MoveAmount <= 0.5f)
         {
-            playerManager.characterController.Move(MoveDirection * WalkingSpeed * Time.deltaTime);
+            characterManager.characterController.Move(MoveDirection * WalkingSpeed * Time.deltaTime);
         }
 
         if (_lockY)
@@ -78,6 +73,6 @@ public class PlayerLocomotionManager : MonoBehaviour
     {
         Vector3 mousePosition = RaycastPlane.QueryPlane();
 
-        playerManager.characterController.transform.LookAt(mousePosition, Vector3.up);
+        characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
     }
 }

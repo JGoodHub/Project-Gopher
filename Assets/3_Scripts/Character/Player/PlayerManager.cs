@@ -4,16 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : CharacterManager
 {
-    public static PlayerManager instance;
-    private PlayerLocomotionManager playerLocomotionManager;
-    public CharacterController characterController;
-    public AttributeSet attributeSet;
-    
     private void Awake()
     {
-
         if (instance == null)
         {
             instance = this;
@@ -22,15 +16,8 @@ public class PlayerManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
-        playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
+        characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         characterController = GetComponent<CharacterController>();
         attributeSet = GetComponent<AttributeSet>();
-
-    }
-
-    private void Update()
-    {
-        playerLocomotionManager.HandleAllMovement();
     }
 }
