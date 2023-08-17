@@ -33,7 +33,7 @@ public class BallAndChainBendy : MonoBehaviour
 
     private void OnDestroy()
     {
-        if(_links != null)
+        if (_links != null)
         {
             for (int i = 0; i < _links.Count; i++)
             {
@@ -43,10 +43,33 @@ public class BallAndChainBendy : MonoBehaviour
         }
     }
 
+    // protected virtual void Update()
+    // {
+    //     for (int i = 0; i < _links.Count; i++)
+    //     {
+    //         Vector3 dirToThisLink;
+    //
+    //         if (i == 0)
+    //             dirToThisLink = _links[i].position - transform.position;
+    //         else
+    //             dirToThisLink = _links[i].position - _links[i - 1].position;
+    //
+    //         _links[i].right = dirToThisLink.normalized * -1f;
+    //
+    //         _links[i].transform.position = Vector3.Lerp(_links[i].transform.position, _linkTargets[i].transform.position, _lerps[i]);
+    //     }
+    //
+    //     _links[0].right = (_links[0].position - _links[1].position).normalized;
+    // }
+
+
+    // above code is giving errors, disabled for testing
     protected virtual void Update()
     {
         for (int i = 0; i < _links.Count; i++)
         {
+            if (_links[i] == null || _linkTargets[i] == null) continue; // Skip destroyed objects
+
             Vector3 dirToThisLink;
 
             if (i == 0)
@@ -56,9 +79,14 @@ public class BallAndChainBendy : MonoBehaviour
 
             _links[i].right = dirToThisLink.normalized * -1f;
 
-            _links[i].transform.position = Vector3.Lerp(_links[i].transform.position, _linkTargets[i].transform.position, _lerps[i]);
+            _links[i].transform.position =
+                Vector3.Lerp(_links[i].transform.position, _linkTargets[i].transform.position, _lerps[i]);
         }
 
-        _links[0].right = (_links[0].position - _links[1].position).normalized;
+        if (_links.Count > 0 && _links[0] != null && _links[1] != null)
+        {
+            _links[0].right = (_links[0].position - _links[1].position).normalized;
+
+        }
     }
 }

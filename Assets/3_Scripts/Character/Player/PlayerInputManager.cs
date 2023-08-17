@@ -31,7 +31,12 @@ public class PlayerInputManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
- 
+
+ private void Start()
+ {
+     DontDestroyOnLoad(gameObject);
+ }
+
 
  private void OnEnable()
  {

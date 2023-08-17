@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class CharacterLocomotionManager : MonoBehaviour
 {
@@ -80,6 +81,8 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     private void HandleRotationMovement()
     {
+        if (!Application.isFocused) return;
+       
         Vector3 mousePosition = RaycastPlane.QueryPlane();
 
         characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
