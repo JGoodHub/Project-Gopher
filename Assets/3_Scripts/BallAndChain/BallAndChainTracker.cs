@@ -18,14 +18,16 @@ public class BallAndChainTracker : MonoBehaviour
     private int _tapCount;
     private float _tapIntervalCooldown;
     private float _tapResetCooldown;
-
+    
     private List<Transform> _attachedChains = new List<Transform>();
+    private CharacterLocomotionManager characterLocomotionManager;
     private AttributeSet _attributeSet;
 
     private IEnumerator Start()
     {
         // small delay to fix weird initial chain physics (they sank below the ground)
         yield return new WaitForSeconds(0.5f);
+        characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         _attributeSet = GetComponent<AttributeSet>();
         _attributeSet.onHeldChainsChanged += UpdateChains;
 
@@ -55,6 +57,7 @@ public class BallAndChainTracker : MonoBehaviour
         if (_tapCount >= _tapsRequiredToRemove)
         {
             RemoveChain();
+            
             _tapCount = 0;
 
             _tapIntervalCooldown = _tapsMinInterval;
@@ -77,6 +80,7 @@ public class BallAndChainTracker : MonoBehaviour
 
         Transform chainTransform = Instantiate(_ballAndChainPrefab, attachPosition, Quaternion.Euler(0, _attachedChains.Count * 144, 0), transform).transform;
         _attachedChains.Add(chainTransform);
+        characterLocomotionManager.RunningSpeed -= 1f;
     }
 
     public void RemoveChain()
@@ -86,6 +90,7 @@ public class BallAndChainTracker : MonoBehaviour
 
         Destroy(_attachedChains[0].gameObject);
         _attachedChains.RemoveAt(0);
+        characterLocomotionManager.RunningSpeed += 1f;
     }
 
     private void UpdateChains(int newHeldChains)
