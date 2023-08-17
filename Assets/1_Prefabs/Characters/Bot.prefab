@@ -967,6 +967,8 @@ GameObject:
   - component: {fileID: 6512117526970127037}
   - component: {fileID: -1139685877811414194}
   - component: {fileID: -3108170285353798612}
+  - component: {fileID: 6356203467910903130}
+  - component: {fileID: 1309050442910385288}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Player
@@ -1113,8 +1115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _baseHealth: 100
   _maxHealth: 500
-  heldChains: 2
   maxHeldChains: 5
+  _heldChains: 0
 --- !u!114 &-1139685877811414194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,6 +1129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab769d0f9253394f9d91440a580537e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerNetworkManager: {fileID: 0}
   characterController: {fileID: 0}
   attributeSet: {fileID: 0}
 --- !u!114 &-3108170285353798612
@@ -1149,6 +1152,45 @@ MonoBehaviour:
   RotationSpeed: 15
   _movementScope: 0
   _lockY: 0
+--- !u!114 &6356203467910903130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &1309050442910385288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05d672861d3affd4589ac3ccb45cb57e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  NetworkRotation:
+    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
+  NetworkPositionVelocity: {x: 0, y: 0, z: 0}
+  NetworkPositionSmoothTime: 0.1
+  NetworkRotationSmoothTime: 0.1
 --- !u!1 &4470164093591359349
 GameObject:
   m_ObjectHideFlags: 0

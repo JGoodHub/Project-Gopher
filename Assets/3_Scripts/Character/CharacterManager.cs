@@ -8,32 +8,26 @@ using UnityEngine.TextCore.Text;
 
 public class CharacterManager : NetworkBehaviour
 {
-    // public static CharacterManager instance;
     protected CharacterLocomotionManager characterLocomotionManager;
     [SerializeField] private PlayerNetworkManager _playerNetworkManager;
     public CharacterController characterController;
     public AttributeSet attributeSet;
+    protected BallAndChainThrower _ballAndChainThrower;
     
 
     protected virtual void Awake()
     {
-        // if (instance == null)
-        // {
-        //     instance = this;
-        // }
-        // else
-        // {
-        //     Destroy(gameObject);
-        // }
         _playerNetworkManager = GetComponent<PlayerNetworkManager>();
         characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         characterController = GetComponent<CharacterController>();
         attributeSet = GetComponent<AttributeSet>();
+        _ballAndChainThrower = GetComponent<BallAndChainThrower>();
     }
 
     protected virtual void Update()
     {
         UpdateNetworkVariables();
+        ThrowChain();
     }
 
     private void UpdateNetworkVariables()
@@ -50,6 +44,15 @@ public class CharacterManager : NetworkBehaviour
         
             transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
                 _playerNetworkManager.NetworkRotationSmoothTime);
+        }
+    }
+
+    private void ThrowChain()
+    {
+        if (IsOwner && Input.GetButtonDown("Fire1"))
+        {
+            Debug.Log("throwing");
+            _ballAndChainThrower.FireChain();
         }
     }
 
