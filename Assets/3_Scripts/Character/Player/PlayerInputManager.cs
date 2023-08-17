@@ -18,6 +18,9 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] private Vector2 CameraInput;
     private float CameraHorizontalInput, CameraVerticalInput ;
 
+    [Header("Actions")] 
+    [SerializeField] public bool hasFired;
+
 
 
  private void Awake()
@@ -46,6 +49,8 @@ public class PlayerInputManager : MonoBehaviour
 
          playerControls.Movement.Movement.performed += i => MovementInput = i.ReadValue<Vector2>();
          playerControls.Camera.Camera.performed += i => CameraInput = i.ReadValue<Vector2>();
+         playerControls.Actions.Fire.started += i => hasFired = true;
+         playerControls.Actions.Fire.canceled += i => hasFired = false;
      }
      playerControls.Enable();
         

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    // public static PlayerCamera instance;
+    private static PlayerCamera instance;
     public PlayerManager playerManager;
     public float cameraHeight = 12.0f; 
     public float cameraAngle = 60.0f; 
@@ -12,19 +12,18 @@ public class PlayerCamera : MonoBehaviour
     {
         
         //TODO: CharacterManager is on the player, only one can be active rn 
-        // if (instance == null)
-        // {
-        //     instance = this;
-        // }
-        // else
-        // {
-        //     Destroy(this);
-        // }
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
         playerManager = GetComponentInParent<PlayerManager>();
     }
     
