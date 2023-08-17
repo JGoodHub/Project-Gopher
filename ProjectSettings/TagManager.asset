@@ -7,6 +7,7 @@ TagManager:
   - OtherPlayers
   - Terrain
   - Grid
+  - Bot
   layers:
   - Default
   - TransparentFX

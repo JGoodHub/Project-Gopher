@@ -17,17 +17,22 @@ public class BallAndChainThrower : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonDown("Fire1") && _attributeSet.heldChains > 0)
+        // FireChain();
+    }
+
+    public void FireChain()
+    {
+        if ( _attributeSet.heldChains > 0)
         {
             Vector3 target = RaycastPlane.QueryPlane();
-            
+
             Debug.DrawLine(transform.position, target, Color.green, 5f);
 
             ThrowChain(target);
         }
     }
 
-    public void ThrowChain(Vector3 target)
+    private void ThrowChain(Vector3 target)
     {
         ThrowableBallAndChain chain = Instantiate(_chainPrefab).GetComponent<ThrowableBallAndChain>();
 

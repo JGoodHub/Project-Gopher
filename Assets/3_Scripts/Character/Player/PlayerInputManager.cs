@@ -16,8 +16,8 @@ public class PlayerInputManager : MonoBehaviour
 
     [Header("Camera Input")] 
     [SerializeField] private Vector2 CameraInput;
-    private float CameraHorizontalInput, CameraVerticalInput ;
-
+    private float CameraHorizontalInput, CameraVerticalInput;
+    
 
 
  private void Awake()
@@ -31,7 +31,12 @@ public class PlayerInputManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
- 
+
+ private void Start()
+ {
+     DontDestroyOnLoad(gameObject);
+ }
+
 
  private void OnEnable()
  {
@@ -51,8 +56,10 @@ public class PlayerInputManager : MonoBehaviour
         HandleMovementInput();
         HandleCameraInput();
     }
+    
+ 
 
-    private void HandleMovementInput()
+ private void HandleMovementInput()
     {
         HorizontalInput = MovementInput.x;
         VerticalInput = MovementInput.y;
@@ -76,4 +83,7 @@ public class PlayerInputManager : MonoBehaviour
         CameraHorizontalInput = CameraInput.x;
         CameraVerticalInput = CameraInput.y;
     }
+    
+
+    
 }

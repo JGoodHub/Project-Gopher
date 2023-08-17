@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class RoundManager : MonoBehaviour
 {
-    [SerializeField] private float roundTimer = 0.0f;
-    [SerializeField] private bool isTimerActive = false;
-    private const float MaxRoundTimer = 60.0f;
+    [SerializeField] private float _roundTimer = 0.0f;
+    [SerializeField] private bool _isTimerActive = false;
+    private const float _maxRoundTimer = 60.0f;
 
     private UpdatePitfallTimer _updatePitfallTimer;
     private void Start()
@@ -24,10 +24,10 @@ public class RoundManager : MonoBehaviour
 
     private void RoundTimer()
     {
-        if (isTimerActive)
+        if (_isTimerActive)
         {
-            roundTimer += Time.deltaTime;
-            if (roundTimer >= MaxRoundTimer)
+            _roundTimer += Time.deltaTime;
+            if (_roundTimer >= _maxRoundTimer)
             {
                 EndRound();
             }
@@ -36,17 +36,17 @@ public class RoundManager : MonoBehaviour
 
     private void RoundStartTimer()
     {
-        isTimerActive = true;
+        _isTimerActive = true;
     }
 
     private void RoundEndTimer()
     {
-        isTimerActive = false;
+        _isTimerActive = false;
     }
 
     private void ResetTimer()
     {
-        roundTimer = 0.0f;
+        _roundTimer = 0.0f;
     }
 
     private void EndRound()
