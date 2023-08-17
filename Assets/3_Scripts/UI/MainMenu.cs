@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,29 +20,40 @@ public class MainMenu : MonoBehaviour
     }
 
     [Header("Panels")]
-    [SerializeField] private GameObject _playPanel;
+    [SerializeField] private GameObject _splashPanel;
     [SerializeField] private GameObject _lobbySelectionPanel;
-    [SerializeField] private GameObject _createLobbyPanel;
-    [SerializeField] private GameObject _lobbyRoomPanel;
+    [SerializeField] private GameObject _lobbyCreatorPanel;
+    [SerializeField] private GameObject _lobbyViewerPanel;
 
-    [Header("Buttons")]
-    [SerializeField] private Button _playButton;
+    [Header("Splash")]
+    [SerializeField] private Button _startButton;
+
+    [Header("Lobby Selection")]
+    [SerializeField] private RectTransform _lobbyItemsContainer;
+    [SerializeField] private GameObject _lobbyItemPrefab;
+    [SerializeField] private Button _openLobbyCreatorButton;
+
+    [Header("Lobby Creator")]
+    [SerializeField] private TMP_InputField _roomNameField;
+    [SerializeField] private TMP_InputField _maxPlayersField;
     [SerializeField] private Button _createLobbyButton;
-    [SerializeField] private Button _leaveLobbyButton;
     [SerializeField] private Button _backToLobbySelectionButton;
 
-    [Header("Prefabs")]
-    [SerializeField] private GameObject _lobbyItemPrefab;
+    [Header("Lobby Viewer")]
+    [SerializeField] private RectTransform _playerItemsContainer;
     [SerializeField] private GameObject _playerItemPrefab;
+    [SerializeField] private Button _leaveLobbyButton;
+    [SerializeField] private Button _startLobbyButton;
+    [SerializeField] private TextMeshProUGUI _lobbyPlayerCountText;
 
     // Start is called before the first frame update
     private void Start()
     {
-        _playButton.onClick.AddListener(ShowLobbySelectionPanel);
-        _createLobbyButton.onClick.AddListener(CreateNewLobby);
+        _startButton.onClick.AddListener(GoToLobbySelectionPanel);
+        _openLobbyCreatorButton.onClick.AddListener(GetToLobbyCreationPanel);
     }
 
-    private void ShowLobbySelectionPanel()
+    private void GoToLobbySelectionPanel()
     {
         SetActivePanel(MenuPanel.LobbySelection);
 
@@ -56,17 +68,17 @@ public class MainMenu : MonoBehaviour
         // Code here to create a player item for each person in the lobby
     }
 
-    private void CreateNewLobby()
+    private void GetToLobbyCreationPanel()
     {
         SetActivePanel(MenuPanel.CreateLobby);
     }
 
     private void SetActivePanel(MenuPanel menuPanel)
     {
-        _playPanel.SetActive(menuPanel == MenuPanel.Play);
+        _splashPanel.SetActive(menuPanel == MenuPanel.Play);
         _lobbySelectionPanel.SetActive(menuPanel == MenuPanel.LobbySelection);
-        _createLobbyPanel.SetActive(menuPanel == MenuPanel.CreateLobby);
-        _lobbyRoomPanel.SetActive(menuPanel == MenuPanel.RoomViewer);
+        _lobbyCreatorPanel.SetActive(menuPanel == MenuPanel.CreateLobby);
+        _lobbyViewerPanel.SetActive(menuPanel == MenuPanel.RoomViewer);
     }
 
     private void LoadArena()
