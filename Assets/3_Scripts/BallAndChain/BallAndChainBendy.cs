@@ -37,7 +37,7 @@ public class BallAndChainBendy : MonoBehaviour
         {
             for (int i = 0; i < _links.Count; i++)
             {
-                if (_links[i]?.gameObject != null)
+                if (_links[i] != null)
                     Destroy(_links[i].gameObject);
             }
         }
