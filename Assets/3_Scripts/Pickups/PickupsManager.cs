@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupsController : MonoBehaviour
+public class PickupsManager : MonoBehaviour
 {
     [Serializable]
     private class PickupLibraryEntry
@@ -12,9 +12,9 @@ public class PickupsController : MonoBehaviour
         public GameObject prefab;
     }
 
-    private static PickupsController _singleton;
+    private static PickupsManager _singleton;
 
-    public static PickupsController Singleton => _singleton ??= FindObjectOfType<PickupsController>();
+    public static PickupsManager Singleton => _singleton ??= FindObjectOfType<PickupsManager>();
 
     private Transform _pickupsContainer;
 

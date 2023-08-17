@@ -138,5 +138,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 0}
-  cameraHeight: 10
+  cameraHeight: 14
   cameraAngle: 60

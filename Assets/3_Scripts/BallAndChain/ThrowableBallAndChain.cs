@@ -38,7 +38,7 @@ public class ThrowableBallAndChain : MonoBehaviour
 
     private void HandleMissedShot()
     {
-        PickupsController.Singleton.SpawnPickup(Pickup.Type.Ammo, new Vector3(transform.position.x, 0f, transform.position.z));
+        PickupsManager.Singleton.SpawnPickup(Pickup.Type.Ammo, new Vector3(transform.position.x, 0f, transform.position.z));
 
         Destroy(gameObject, 0.02f);
 
