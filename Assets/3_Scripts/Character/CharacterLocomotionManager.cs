@@ -14,8 +14,8 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     private Vector3 MoveDirection;
 
-    [SerializeField] private float WalkingSpeed = 2.0f;
-    [SerializeField] private float RunningSpeed = 5.0f;
+    [SerializeField] public float WalkingSpeed = 2.5f;
+    [SerializeField] public float RunningSpeed = 5.0f;
     [SerializeField] private float RotationSpeed = 15.0f;
 
     [SerializeField] private Space _movementScope;
@@ -52,7 +52,7 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
         }
 
         MoveDirection.Normalize();
-        MoveDirection.y = 0;
+        //MoveDirection.y = 0;
 
         if (MoveAmount > 0.5f)
         {
@@ -65,7 +65,7 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
         if (_lockY)
         {
-            transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+           transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
         }
     }
 
