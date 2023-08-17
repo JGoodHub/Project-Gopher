@@ -23,8 +23,10 @@ public class BallAndChainTracker : MonoBehaviour
     private CharacterLocomotionManager characterLocomotionManager;
     private AttributeSet _attributeSet;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        // small delay to fix weird initial chain physics (they sank below the ground)
+        yield return new WaitForSeconds(0.5f);
         characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         _attributeSet = GetComponent<AttributeSet>();
         _attributeSet.onHeldChainsChanged += UpdateChains;
