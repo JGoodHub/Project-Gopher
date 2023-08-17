@@ -7,11 +7,27 @@ using UnityEngine.Android;
 
 public class AttributeSet : MonoBehaviour
 {
+    public delegate void OnHeldChainsChanged(int newHeldChains);
+    public event OnHeldChainsChanged onHeldChainsChanged;
+
     [SerializeField] private float _baseHealth = 100;
     [SerializeField] private float _maxHealth = 500;
 
-    public int heldChains = 2;
     public int maxHeldChains = 5;
+
+    private int _heldChains;
+    public int heldChains
+    {
+        get => _heldChains;
+        set
+        {
+            if (_heldChains != value)
+            {
+                _heldChains = value;
+                onHeldChainsChanged?.Invoke(_heldChains);
+            }
+        }
+    }
 
     private int _dashes = 2;
     private int _maxDashes = 2; // maybe power-ups can alter this
@@ -21,6 +37,7 @@ public class AttributeSet : MonoBehaviour
     private void Start()
     {
         _health = _baseHealth;
+        _heldChains = 2;
     }
 
     private void Update()
