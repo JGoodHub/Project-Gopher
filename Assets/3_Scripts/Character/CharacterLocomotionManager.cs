@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public abstract class CharacterLocomotionManager : MonoBehaviour
+public abstract class CharacterLocomotionManager : NetworkBehaviour
 {
     protected CharacterManager characterManager;
     
 
     [Header("Movement Values")] // These do not have to be here but I like having a copy to use
     public float HorizontalMovement;
+
     public float VerticalMovement;
     public float MoveAmount;
 
@@ -26,7 +29,7 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     private void Awake()
     {
-        characterManager = GetComponent<CharacterManager>();
+        characterManager = GetComponent<PlayerManager>();
     }
 
 
@@ -80,6 +83,7 @@ public abstract class CharacterLocomotionManager : MonoBehaviour
 
     private void HandleRotationMovement()
     {
+        if (!Application.isFocused) return;
         Vector3 mousePosition = RaycastPlane.QueryPlane();
 
         characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
