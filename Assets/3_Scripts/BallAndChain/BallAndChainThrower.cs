@@ -20,6 +20,8 @@ public class BallAndChainThrower : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && _attributeSet.heldChains > 0)
         {
             Vector3 target = RaycastPlane.QueryPlane();
+            
+            Debug.DrawLine(transform.position, target, Color.green, 5f);
 
             ThrowChain(target);
         }
@@ -30,7 +32,9 @@ public class BallAndChainThrower : MonoBehaviour
         ThrowableBallAndChain chain = Instantiate(_chainPrefab).GetComponent<ThrowableBallAndChain>();
 
         Vector3 startPosition = new Vector3(transform.position.x, 0, transform.position.z);
-        Vector3 endPosition = (target - startPosition).normalized * _range;
+        Vector3 endPosition = startPosition + ((target - startPosition).normalized * _range);
+
+        Debug.DrawLine(startPosition, endPosition, Color.red, 5f);
 
         chain.Initialise(startPosition, endPosition);
 
