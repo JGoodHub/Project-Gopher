@@ -5,9 +5,16 @@ using UnityEngine;
 public class PickupSpawner : MonoBehaviour
 {
     public GameObject pickupPrefab;
+    public GameObject pickupGlowPrefab;
     public float targetTime = 5.0f;
     public float roll = 0;
     public bool hasChild = false;
+
+    private void Start()
+    {
+        targetTime = Random.Range(5.0f, 30.0f);
+    }
+
     private void Update()
     {
         targetTime -= Time.deltaTime;
@@ -32,9 +39,8 @@ public class PickupSpawner : MonoBehaviour
         if ((roll >= 50) && (hasChild == false))
         {
             Instantiate(pickupPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z), Quaternion.identity, transform);
+            Instantiate(pickupGlowPrefab, new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z), Quaternion.identity);
         }    
-        targetTime = 5.0f;
+        targetTime = 15.0f;
     }
-
 }
-
