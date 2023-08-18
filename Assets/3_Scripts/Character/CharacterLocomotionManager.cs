@@ -20,18 +20,14 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
 
     [SerializeField] public float WalkingSpeed = 2.5f;
     [SerializeField] public float RunningSpeed = 5.0f;
-    [SerializeField] private float RotationSpeed = 15.0f;
+    // [SerializeField] private float RotationSpeed = 15.0f;
     private const float gravity = -9.81f;
     private const float groundOffset = 0.1f;
 
     [SerializeField] private Space _movementScope;
     [SerializeField] private bool _lockY;
 
-    private void Awake()
-    {
-        characterManager = GetComponent<PlayerManager>();
-    }
-
+    protected abstract void Awake();
 
     public void HandleAllMovement()
     {

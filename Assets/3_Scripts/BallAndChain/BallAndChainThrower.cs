@@ -16,21 +16,28 @@ public class BallAndChainThrower : MonoBehaviour
     }
 
     private void Update()
+{
+    if (Input.GetButtonDown("Fire1") && _attributeSet.heldChains > 0)
     {
-        // FireChain();
+        Vector3 target = RaycastPlane.QueryPlane();
+        
+        Debug.DrawLine(transform.position, target, Color.green, 5f);
+
+        ThrowChain(target);
     }
+}
 
-    public void FireChain()
-    {
-        if ( _attributeSet.heldChains > 0)
-        {
-            Vector3 target = RaycastPlane.QueryPlane();
+    // public void FireChain()
+    // {
+    //     if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0)
+    //     {
+    //         Vector3 target = RaycastPlane.QueryPlane();
 
-            Debug.DrawLine(transform.position, target, Color.green, 5f);
+    //         Debug.DrawLine(transform.position, target, Color.green, 5f);
 
-            ThrowChain(target);
-        }
-    }
+    //         ThrowChain(target);
+    //     }
+    // }
 
     private void ThrowChain(Vector3 target)
     {

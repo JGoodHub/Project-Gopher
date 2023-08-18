@@ -10,7 +10,6 @@ public class PlayerCamera : MonoBehaviour
 
     private void Awake()
     {
-        
         //TODO: CharacterManager is on the player, only one can be active rn 
         if (instance == null)
         {
@@ -26,7 +25,6 @@ public class PlayerCamera : MonoBehaviour
     {
         playerManager = GetComponentInParent<PlayerManager>();
     }
-    
 
     public void AttachToPlayerAndFollow()
     {
@@ -39,7 +37,4 @@ public class PlayerCamera : MonoBehaviour
         
         transform.LookAt(targetPosition);
     }
-
-
-   
 }
