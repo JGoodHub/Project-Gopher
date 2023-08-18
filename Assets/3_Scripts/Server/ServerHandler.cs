@@ -72,6 +72,7 @@ public class ServerHandler : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SpawnPlayerPrefabServerRpc(Vector3 position, ServerRpcParams rpcParams = default)
     {
+        Debug.Log($"------------------------ Spawning player for client id {rpcParams.Receive.SenderClientId}");
         GameObject playerObject = Instantiate(_playerPrefab, position, Quaternion.identity);
         playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(rpcParams.Receive.SenderClientId, true);
     }

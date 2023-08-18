@@ -11,6 +11,12 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Start()
     {
-        ServerHandler.Singleton.SpawnPlayerPrefabServerRpc(_playerSpawnPoint.position);
+        ServerHandler.Singleton.SpawnPlayerPrefabServerRpc(_playerSpawnPoint.position, new ServerRpcParams
+        {
+            Receive = new ServerRpcReceiveParams
+            {
+                SenderClientId = NetworkManager.Singleton.LocalClientId
+            }
+        });
     }
 }
