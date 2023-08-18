@@ -19,10 +19,12 @@ public class BallAndChainTracker : MonoBehaviour
     private int _tapCount;
     private float _tapIntervalCooldown;
     private float _tapResetCooldown;
+    private bool _initialized = false;
     
     private List<Transform> _attachedChains = new List<Transform>();
     private CharacterLocomotionManager characterLocomotionManager;
     private AttributeSet _attributeSet;
+    private BallAndChainThrower _ballAndChainThrower;
 
     private IEnumerator Start()
     {
@@ -31,15 +33,20 @@ public class BallAndChainTracker : MonoBehaviour
         characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         _attributeSet = GetComponent<AttributeSet>();
         _attributeSet.onHeldChainsChanged += UpdateChains;
+        _ballAndChainThrower = GetComponent<BallAndChainThrower>();
 
         for (int i = 0; i < _attributeSet.heldChains; i++)
         {
             AddChain();
         }
+
+        _initialized = true;
     }
 
     private void Update()
     {
+        if (!_initialized) return;
+
         _tapResetCooldown -= Time.deltaTime;
         _tapIntervalCooldown -= Time.deltaTime;
         stunTimeRemaining -= Time.deltaTime;
@@ -66,6 +73,10 @@ public class BallAndChainTracker : MonoBehaviour
         if (stunTimeRemaining <= 0 && _attributeSet.isStunned) {
             _attributeSet.isStunned = false;
             characterLocomotionManager.canRotate = true;
+            if (_ballAndChainThrower != null && _attributeSet != null && characterLocomotionManager != null) 
+            {
+                _ballAndChainThrower.ThrowAllChainsRandomly();
+            }
         }
     }
 

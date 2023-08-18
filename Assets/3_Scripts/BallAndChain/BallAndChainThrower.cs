@@ -56,4 +56,15 @@ public class BallAndChainThrower : MonoBehaviour
 
         _attributeSet.heldChains--;
     }
+
+    public void ThrowAllChainsRandomly()
+    {
+        while (_attributeSet.heldChains > 0)
+        {
+            Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f)).normalized;
+            Vector3 target = transform.position + randomDirection * _range;
+
+            ThrowChain(target);
+        }
+    }
 }
