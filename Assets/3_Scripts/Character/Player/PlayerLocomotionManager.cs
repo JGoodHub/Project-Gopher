@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class PlayerLocomotionManager : CharacterLocomotionManager
 {
+    protected override void Awake()
+    {
+        characterManager = GetComponent<PlayerManager>();
+    }
+
     protected override void GetMovementValues()
     {
         HorizontalMovement = PlayerInputManager.instance.HorizontalInput;

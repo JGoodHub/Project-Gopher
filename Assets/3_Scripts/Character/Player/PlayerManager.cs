@@ -8,7 +8,7 @@ using UnityEngine.TextCore.Text;
 
 public class PlayerManager : CharacterManager
 {
-
+    [SerializeField] private PlayerNetworkManager _playerNetworkManager;
     private PlayerCamera _playerCamera;
     private PlayerLocomotionManager _playerLocomotionManager;
 
@@ -23,7 +23,7 @@ public class PlayerManager : CharacterManager
         // {
         //     Destroy(gameObject);
         // }
-        
+        _playerNetworkManager = GetComponent<PlayerNetworkManager>();
         _playerCamera = GetComponentInChildren<PlayerCamera>();
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
     }
@@ -39,7 +39,27 @@ public class PlayerManager : CharacterManager
         base.Update();
         _playerLocomotionManager.HandleAllMovement();
         _playerCamera.AttachToPlayerAndFollow();
+        UpdateNetworkVariables();
+        // ThrowChain();
     }
 
-   
+    private void UpdateNetworkVariables()
+    {
+        if (_playerNetworkManager != null && _playerNetworkManager.NetworkPosition != null && _playerNetworkManager.NetworkRotation != null)
+        {
+            if (IsOwner)
+            {
+                _playerNetworkManager.NetworkPosition.Value = transform.position;
+                _playerNetworkManager.NetworkRotation.Value = transform.rotation;
+            }
+            else
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
+                    ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
+            
+                transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
+                    _playerNetworkManager.NetworkRotationSmoothTime);
+            }
+        }
+    }   
 }

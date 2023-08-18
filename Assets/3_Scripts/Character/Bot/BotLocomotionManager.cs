@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class BotLocomotionManager : CharacterLocomotionManager
 {
+    protected override void Awake()
+    {
+        characterManager = GetComponent<BotManager>();
+    }
+
     protected override void GetMovementValues()
     {
         HorizontalMovement = 0;

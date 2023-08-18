@@ -9,15 +9,14 @@ using UnityEngine.TextCore.Text;
 public class CharacterManager : NetworkBehaviour
 {
     protected CharacterLocomotionManager characterLocomotionManager;
-    [SerializeField] private PlayerNetworkManager _playerNetworkManager;
     public CharacterController characterController;
     public AttributeSet attributeSet;
     protected BallAndChainThrower _ballAndChainThrower;
-    
+    public GameObject stunEffectPrefab;
+    private GameObject currentStunEffect;
 
     protected virtual void Awake()
     {
-        _playerNetworkManager = GetComponent<PlayerNetworkManager>();
         characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         characterController = GetComponent<CharacterController>();
         attributeSet = GetComponent<AttributeSet>();
@@ -26,35 +25,30 @@ public class CharacterManager : NetworkBehaviour
 
     protected virtual void Update()
     {
-        UpdateNetworkVariables();
-        ThrowChain();
-    }
+        // ThrowChain();
 
-    private void UpdateNetworkVariables()
-    {
-        if (IsOwner)
+        // handles stun effect
+        if(attributeSet.isStunned && currentStunEffect == null)
         {
-            _playerNetworkManager.NetworkPosition.Value = transform.position;
-            _playerNetworkManager.NetworkRotation.Value = transform.rotation;
+            // Add an offset to the Y position so the effect appears above the character
+            Vector3 effectPosition = transform.position + new Vector3(0, 2.0f, 0);
+            // Instantiate the effect and parent it to this character
+            currentStunEffect = Instantiate(stunEffectPrefab, effectPosition, Quaternion.identity, transform);
         }
-        else
+        else if(!attributeSet.isStunned && currentStunEffect != null)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
-                ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
-        
-            transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
-                _playerNetworkManager.NetworkRotationSmoothTime);
+            // Destroy the effect when the stun ends
+            Destroy(currentStunEffect);
+            currentStunEffect = null;
         }
     }
 
-    private void ThrowChain()
-    {
-        if (IsOwner && Input.GetButtonDown("Fire1"))
-        {
-            Debug.Log("throwing");
-            _ballAndChainThrower.FireChain();
-        }
-    }
-
-    
+    // protected void ThrowChain()
+    // {
+    //     if (IsOwner && Input.GetButtonDown("Fire1"))
+    //     {
+    //         Debug.Log("throwing");
+    //         _ballAndChainThrower.FireChain();
+    //     }
+    // }    
 }

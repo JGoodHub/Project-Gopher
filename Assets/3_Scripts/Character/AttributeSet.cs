@@ -14,8 +14,7 @@ public class AttributeSet : MonoBehaviour
     [SerializeField] private float _maxHealth = 500;
 
     public int maxHeldChains = 5;
-
-    public int _heldChains;
+    private int _heldChains;
     public int heldChains
     {
         get => _heldChains;
@@ -28,11 +27,10 @@ public class AttributeSet : MonoBehaviour
             }
         }
     }
-
-    private int _dashes = 2;
-    private int _maxDashes = 2; // maybe power-ups can alter this
-
+    // private int _dashes = 2;
+    // private int _maxDashes = 2;
     private float _health;
+    public bool isStunned;
 
     private void Start()
     {

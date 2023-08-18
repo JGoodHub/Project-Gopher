@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickupPrefab: {fileID: 205110591073207100, guid: 9f4a98a65969f411c8f363a5d7f372b6, type: 3}
-  targetTime: 2
+  pickupGlowPrefab: {fileID: 5263155901446189355, guid: 07f567eca5b93094db6db102db991dd5, type: 3}
+  targetTime: 15
   roll: 0
   hasChild: 0

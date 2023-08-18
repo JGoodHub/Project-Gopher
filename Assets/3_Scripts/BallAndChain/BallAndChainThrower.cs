@@ -17,12 +17,12 @@ public class BallAndChainThrower : MonoBehaviour
 
     private void Update()
     {
-        // FireChain();
+        FireChain();
     }
 
     public void FireChain()
     {
-        if ( _attributeSet.heldChains > 0)
+        if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0) && gameObject.CompareTag("Player") && (_attributeSet.isStunned == false))
         {
             Vector3 target = RaycastPlane.QueryPlane();
 
@@ -32,7 +32,7 @@ public class BallAndChainThrower : MonoBehaviour
         }
     }
 
-    private void ThrowChain(Vector3 target)
+    public void ThrowChain(Vector3 target)
     {
         ThrowableBallAndChain chain = Instantiate(_chainPrefab).GetComponent<ThrowableBallAndChain>();
 
@@ -43,8 +43,8 @@ public class BallAndChainThrower : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(startPosition, direction, out hit, _range))
         {
-            if (hit.collider.gameObject.tag != "Player" && hit.collider.gameObject.tag != "OtherPlayers"
-                && hit.collider.gameObject.tag != "Grid")
+            if (!hit.collider.gameObject.CompareTag("Player") && !hit.collider.gameObject.CompareTag("OtherPlayers")
+                                                              && !hit.collider.gameObject.CompareTag("Grid"))
             {
                 endPosition = hit.point;
             }
@@ -55,5 +55,16 @@ public class BallAndChainThrower : MonoBehaviour
         chain.Initialise(startPosition, endPosition);
 
         _attributeSet.heldChains--;
+    }
+
+    public void ThrowAllChainsRandomly()
+    {
+        while (_attributeSet.heldChains > 0)
+        {
+            Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f)).normalized;
+            Vector3 target = transform.position + randomDirection * _range;
+
+            ThrowChain(target);
+        }
     }
 }

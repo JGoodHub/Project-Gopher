@@ -20,7 +20,7 @@ public class BallAndChainBendy : MonoBehaviour
 
     protected virtual void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(_linksParent);
         for (int i = 0; i < _links.Count; i++)
         {
             Transform linkTarget = new GameObject("Link_Target").transform;
