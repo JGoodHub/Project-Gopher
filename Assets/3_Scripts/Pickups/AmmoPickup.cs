@@ -4,7 +4,7 @@ public class AmmoPickup : Pickup
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("Bot"))
         {
             AttributeSet playerAttributeSet = other.GetComponent<AttributeSet>();
 
