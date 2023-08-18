@@ -1,0 +1,50 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class Preloader : MonoBehaviour
+{
+
+    private void Start()
+    {
+        Dictionary<string, string> args = GetCommandlineArgs();
+
+        if (args.TryGetValue("-mode", out string mode))
+        {
+            if (mode == "server")
+            {
+                Debug.Log($"[{GetType()}]: Starting application in server mode");
+                SceneManager.LoadScene("Server");
+            }
+            else
+            {
+                Debug.Log($"[{GetType()}]: Starting application in client mode");
+                SceneManager.LoadScene("Menu");
+            }
+        }
+    }
+
+    private static Dictionary<string, string> GetCommandlineArgs()
+    {
+        Dictionary<string, string> argDictionary = new Dictionary<string, string>();
+
+        string[] args = System.Environment.GetCommandLineArgs();
+
+        for (int i = 0; i < args.Length; ++i)
+        {
+            string arg = args[i].ToLower();
+            if (arg.StartsWith("-"))
+            {
+                string value = i < args.Length - 1 ? args[i + 1].ToLower() : null;
+                value = (value?.StartsWith("-") ?? false) ? null : value;
+
+                argDictionary.Add(arg, value);
+            }
+        }
+
+        return argDictionary;
+    }
+
+}
