@@ -47,11 +47,10 @@ public class BallAndChainTracker : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && _tapIntervalCooldown <= 0 && _attachedChains.Count > 0)
         {
+            // for if we ever want to use the spacebar key
             _tapCount++;
             _tapIntervalCooldown = _tapsMinInterval;
             _tapResetCooldown = _tapsExpiration;
-            
-            _hammerParticleSystem.Emit(1);
         }
 
         if (_tapCount >= _tapsRequiredToRemove)
