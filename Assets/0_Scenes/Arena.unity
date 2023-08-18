@@ -848,6 +848,17 @@ MonoBehaviour:
   VerticalInput: 0
   MoveAmount: 0
   CameraInput: {x: 0, y: 0}
+--- !u!114 &1918806446 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5869104639235749683, guid: 042987b0a64e34eb59ef7b41def7a6da, type: 3}
+  m_PrefabInstance: {fileID: 183590377}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918806444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9cb4763163835e4db928feb725b43ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1962489209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -941,6 +952,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 859975372717885145, guid: 72b87fc3d20f84777bed98d4fd19b3af, type: 3}
+      propertyPath: _characterManager
+      value: 
+      objectReference: {fileID: 1918806446}
+    - target: {fileID: 5024469494857915352, guid: 72b87fc3d20f84777bed98d4fd19b3af, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8278058892747705695, guid: 72b87fc3d20f84777bed98d4fd19b3af, type: 3}
       propertyPath: m_Name
       value: Canvas
