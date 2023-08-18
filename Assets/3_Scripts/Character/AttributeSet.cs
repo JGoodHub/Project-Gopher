@@ -30,7 +30,7 @@ public class AttributeSet : MonoBehaviour
     // private int _dashes = 2;
     // private int _maxDashes = 2;
     private float _health;
-    public Boolean isStunned;
+    public bool isStunned;
 
     private void Start()
     {

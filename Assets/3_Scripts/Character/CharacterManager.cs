@@ -12,6 +12,8 @@ public class CharacterManager : NetworkBehaviour
     public CharacterController characterController;
     public AttributeSet attributeSet;
     protected BallAndChainThrower _ballAndChainThrower;
+    public GameObject stunEffectPrefab;
+    private GameObject currentStunEffect;
 
     protected virtual void Awake()
     {
@@ -24,8 +26,20 @@ public class CharacterManager : NetworkBehaviour
     protected virtual void Update()
     {
         // ThrowChain();
-        if(attributeSet.isStunned) {
-            //handle stun
+
+        // handles stun effect
+        if(attributeSet.isStunned && currentStunEffect == null)
+        {
+            // Add an offset to the Y position so the effect appears above the character
+            Vector3 effectPosition = transform.position + new Vector3(0, 2.0f, 0);
+            // Instantiate the effect and parent it to this character
+            currentStunEffect = Instantiate(stunEffectPrefab, effectPosition, Quaternion.identity, transform);
+        }
+        else if(!attributeSet.isStunned && currentStunEffect != null)
+        {
+            // Destroy the effect when the stun ends
+            Destroy(currentStunEffect);
+            currentStunEffect = null;
         }
     }
 

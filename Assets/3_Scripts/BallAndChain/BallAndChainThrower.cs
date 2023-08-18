@@ -22,7 +22,7 @@ public class BallAndChainThrower : MonoBehaviour
 
     public void FireChain()
     {
-        if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0) && gameObject.CompareTag("Player"))
+        if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0) && gameObject.CompareTag("Player") && (_attributeSet.isStunned == false))
         {
             Vector3 target = RaycastPlane.QueryPlane();
 

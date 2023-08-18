@@ -15,6 +15,7 @@ public class BallAndChainTracker : MonoBehaviour
     [Space]
     [SerializeField] private ParticleSystem _hammerParticleSystem;
 
+    private float stunTimeRemaining;
     private int _tapCount;
     private float _tapIntervalCooldown;
     private float _tapResetCooldown;
@@ -41,26 +42,30 @@ public class BallAndChainTracker : MonoBehaviour
     {
         _tapResetCooldown -= Time.deltaTime;
         _tapIntervalCooldown -= Time.deltaTime;
+        stunTimeRemaining -= Time.deltaTime;
 
         if (_tapResetCooldown <= 0)
             _tapCount = 0;
 
-        if (Input.GetButtonDown("Jump") && _tapIntervalCooldown <= 0 && _attachedChains.Count > 0)
+        if (Input.GetButtonDown("Jump")) //&& _tapIntervalCooldown <= 0 && _attachedChains.Count > 0)
         {
-            // for if we ever want to use the spacebar key
             _tapCount++;
             _tapIntervalCooldown = _tapsMinInterval;
             _tapResetCooldown = _tapsExpiration;
+            stunTimeRemaining -= 0.5f;
         }
 
         if (_tapCount >= _tapsRequiredToRemove)
         {
             RemoveChain();
-            
             _tapCount = 0;
-
             _tapIntervalCooldown = _tapsMinInterval;
             _tapResetCooldown = _tapsExpiration;
+        }
+
+        if (stunTimeRemaining <= 0 && _attributeSet.isStunned) {
+            _attributeSet.isStunned = false;
+            characterLocomotionManager.canRotate = true;
         }
     }
 
@@ -82,7 +87,10 @@ public class BallAndChainTracker : MonoBehaviour
         characterLocomotionManager.RunningSpeed -= 1f;
         if (_attachedChains.Count >= _attributeSet.maxHeldChains) {
             _attributeSet.isStunned = true;
+            characterLocomotionManager.canRotate = false;
+            stunTimeRemaining = 5.0f; 
         } else {
+            characterLocomotionManager.canRotate = true;
             _attributeSet.isStunned = false;
         }
     }
