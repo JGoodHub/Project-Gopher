@@ -80,6 +80,11 @@ public class BallAndChainTracker : MonoBehaviour
         Transform chainTransform = Instantiate(_ballAndChainPrefab, attachPosition, Quaternion.Euler(0, _attachedChains.Count * 144, 0), transform).transform;
         _attachedChains.Add(chainTransform);
         characterLocomotionManager.RunningSpeed -= 1f;
+        if (_attachedChains.Count >= _attributeSet.maxHeldChains) {
+            _attributeSet.isStunned = true;
+        } else {
+            _attributeSet.isStunned = false;
+        }
     }
 
     public void RemoveChain()

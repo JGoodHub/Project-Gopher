@@ -24,6 +24,9 @@ public class CharacterManager : NetworkBehaviour
     protected virtual void Update()
     {
         // ThrowChain();
+        if(attributeSet.isStunned) {
+            //handle stun
+        }
     }
 
     // protected void ThrowChain()
