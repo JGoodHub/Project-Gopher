@@ -47,16 +47,20 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button _backToLobbySelectionButton;
 
     [Header("Lobby Viewer")]
+    [SerializeField] private TextMeshProUGUI _roomNameText;
     [SerializeField] private RectTransform _playerItemsContainer;
     [SerializeField] private GameObject _playerItemPrefab;
     [SerializeField] private Button _leaveLobbyButton;
     [SerializeField] private Button _startLobbyButton;
     [SerializeField] private TextMeshProUGUI _lobbyPlayerCountText;
 
+    private Lobby _currentLobby;
+    private ConnectionInfoV2 _currentConnectionInfo;
+
     // Start is called before the first frame update
     private IEnumerator Start()
     {
-        if (Preloader.IsServer)
+        if (ServerHandler.RunningAsServer)
             yield break;
 
         yield return new WaitUntil(() => HathoraService.Singleton.APIReady);
@@ -72,6 +76,8 @@ public class MainMenu : MonoBehaviour
         _backToLobbySelectionButton.onClick.AddListener(() => SetActivePanel(MenuPanel.LobbySelection));
 
         _createLobbyButton.onClick.AddListener(CreateLobby);
+
+        _startLobbyButton.onClick.AddListener(StartCurrentLobbyMatch);
 
         Login();
     }
@@ -113,38 +119,27 @@ public class MainMenu : MonoBehaviour
 
         HathoraService.RoomConfig roomConfig = JsonUtility.FromJson<HathoraService.RoomConfig>(lobby.InitialConfig.ToString());
 
-        lobbyItem.Initialise(lobby.RoomId, roomConfig.RoomName, roomConfig.MaxPlayers, JoinRoom);
+        lobbyItem.Initialise(lobby, roomConfig, JoinRoom);
     }
 
-    private void JoinRoom(string roomID)
+    private void JoinRoom(Lobby lobby)
     {
         SetActivePanel(MenuPanel.LobbyLoading);
 
-        HathoraService.Singleton.GetConnectionInfo(roomID, connectionInfo =>
+        HathoraService.Singleton.GetConnectionInfo(lobby.RoomId, connectionInfo =>
         {
-            JoinRoom(roomID, connectionInfo);
+            JoinRoom(lobby, connectionInfo);
         });
     }
 
-    private void JoinRoom(string roomID, ConnectionInfoV2 connectionInfo)
+    private void JoinRoom(Lobby lobby, ConnectionInfoV2 connectionInfo)
     {
         SetActivePanel(MenuPanel.LobbyLoading);
 
-        // Code here to connect to the unity server running on the room instance
-        UnityTransport unityTransport = Preloader.NetworkManager.GetComponent<UnityTransport>();
+        _currentLobby = lobby;
+        _currentConnectionInfo = connectionInfo;
 
-        IPAddress[] hostAddresses = Dns.GetHostAddresses(connectionInfo.ExposedPort.Host);
-
-        if (hostAddresses.Length == 0)
-        {
-            Debug.LogError($"[{GetType()}]: Failed to resolve host name to ip address");
-        }
-
-        unityTransport.SetConnectionData(hostAddresses[0].ToString(), (ushort) connectionInfo.ExposedPort.Port);
-
-        Preloader.NetworkManager.OnClientConnectedCallback += ClientConnectedToRoomServer;
-
-        Preloader.NetworkManager.StartClient();
+        ServerHandler.Singleton.SetupAsClient(connectionInfo.ExposedPort.Host, (ushort) connectionInfo.ExposedPort.Port, ClientConnectedToRoomServer);
     }
 
     private void ClientConnectedToRoomServer(ulong clientID)
@@ -152,6 +147,10 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Connector to the server");
 
         SetActivePanel(MenuPanel.LobbyViewer);
+
+        HathoraService.RoomConfig roomConfig = JsonUtility.FromJson<HathoraService.RoomConfig>(_currentLobby.InitialConfig.ToString());
+
+        _roomNameText.text = roomConfig.RoomName;
     }
 
     private void GoToLobbyCreationPanel()
@@ -178,9 +177,15 @@ public class MainMenu : MonoBehaviour
 
             HathoraService.Singleton.GetConnectionInfo(lobby.RoomId, connectionInfo =>
             {
-                JoinRoom(connectionInfo.RoomId, connectionInfo);
+                JoinRoom(lobby, connectionInfo);
             });
         });
+    }
+
+    private void StartCurrentLobbyMatch()
+    {
+        Debug.Log("Starting match clicked");
+        ServerHandler.Singleton.StartMatchServerRpc();
     }
 
     private void SetActivePanel(MenuPanel menuPanel)

@@ -39,6 +39,11 @@ public class HathoraService : MonoBehaviour
 
     public bool APIReady => _apiReady;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     private void Start()
     {
         Configuration sdkConfiguration = new Configuration();

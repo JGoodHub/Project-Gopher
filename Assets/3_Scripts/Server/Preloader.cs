@@ -7,19 +7,11 @@ using UnityEngine.SceneManagement;
 
 public class Preloader : MonoBehaviour
 {
-    private static NetworkManager _networkManager;
-
-    public static NetworkManager NetworkManager => _networkManager;
-
-    private static bool _isServer;
-
-    public static bool IsServer => _isServer;
+   
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
-
-        _networkManager = GetComponent<NetworkManager>();
     }
 
     private void Start()
@@ -28,9 +20,7 @@ public class Preloader : MonoBehaviour
 
         if (args.TryGetValue("-mode", out string mode) && mode == "server")
         {
-            Debug.Log($"[{GetType()}]: Starting application in server mode");
-            _networkManager.StartServer();
-            _isServer = true;
+            ServerHandler.Singleton.SetupAsServer();
             return;
         }
 
