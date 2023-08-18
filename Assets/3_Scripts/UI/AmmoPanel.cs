@@ -12,6 +12,6 @@ public class AmmoPanel : MonoBehaviour
     private void Update()
     {
         // TODO THis will need to change when networking is added
-        _ammoCounterText.text = $"{_characterManager.attributeSet.heldChains}/{_characterManager.attributeSet.maxHeldChains}";
+        //_ammoCounterText.text = $"{_characterManager.attributeSet.heldChains}/{_characterManager.attributeSet.maxHeldChains}";
     }
 }

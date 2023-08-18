@@ -11,6 +11,9 @@ public static class CameraHelper
 
     public static Ray GetMouseRay()
     {
+        if (Camera == null)
+            return default;
+
         return Camera.ScreenPointToRay(Input.mousePosition);
     }
 

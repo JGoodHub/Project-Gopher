@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using Unity.Mathematics;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
@@ -17,6 +18,8 @@ public class ServerHandler : NetworkBehaviour
     public static bool RunningAsServer => _runningAsServer;
 
     private Action<ulong> _onConnectedCallback;
+
+    [SerializeField] private GameObject _playerPrefab;
 
     private void Awake()
     {
@@ -64,5 +67,12 @@ public class ServerHandler : NetworkBehaviour
     {
         Debug.Log("Starting match, Loading arena scene");
         NetworkManager.SceneManager.LoadScene("Arena", LoadSceneMode.Single);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SpawnPlayerPrefabServerRpc(Vector3 position, ServerRpcParams rpcParams = default)
+    {
+        GameObject playerObject = Instantiate(_playerPrefab, position, Quaternion.identity);
+        playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(rpcParams.Receive.SenderClientId);
     }
 }

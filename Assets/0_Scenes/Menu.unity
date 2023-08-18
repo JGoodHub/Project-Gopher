@@ -720,7 +720,8 @@ MonoBehaviour:
     NetworkTransport: {fileID: 110143264}
     PlayerPrefab: {fileID: 0}
     Prefabs:
-      NetworkPrefabsLists: []
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: 1b0d2eaeffb094db4b573c939a0dabb5, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
@@ -886,7 +887,6 @@ GameObject:
   - component: {fileID: 155100925}
   - component: {fileID: 155100924}
   - component: {fileID: 155100923}
-  - component: {fileID: 155100926}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -11929,6 +11929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c61671af154d0980ae6f0272b49094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 4175639243323000349, guid: 042987b0a64e34eb59ef7b41def7a6da, type: 3}
 --- !u!1 &1542918275
 GameObject:
   m_ObjectHideFlags: 0

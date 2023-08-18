@@ -28,17 +28,17 @@ public class PlayerManager : CharacterManager
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
-        // PlayerCamera.instance.playerManager = this;
-        DontDestroyOnLoad(gameObject);
+        yield return new WaitForSeconds(0.5f);
+
+        PlayerCamera.Singleton.SetPlayerTarget(this);
     }
 
     protected override void Update()
     {
         base.Update();
         _playerLocomotionManager.HandleAllMovement();
-        _playerCamera.AttachToPlayerAndFollow();
         UpdateNetworkVariables();
         // ThrowChain();
     }
@@ -56,10 +56,10 @@ public class PlayerManager : CharacterManager
             {
                 transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
                     ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
-            
+
                 transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
                     _playerNetworkManager.NetworkRotationSmoothTime);
             }
         }
-    }   
+    }
 }
