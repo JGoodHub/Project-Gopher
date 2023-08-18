@@ -969,6 +969,7 @@ GameObject:
   - component: {fileID: -3108170285353798612}
   - component: {fileID: 6356203467910903130}
   - component: {fileID: 1309050442910385288}
+  - component: {fileID: -2561047716478872670}
   m_Layer: 0
   m_Name: Bot
   m_TagString: Player
@@ -1116,7 +1117,6 @@ MonoBehaviour:
   _baseHealth: 100
   _maxHealth: 500
   maxHeldChains: 5
-  _heldChains: 0
 --- !u!114 &-1139685877811414194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,7 +1129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ab769d0f9253394f9d91440a580537e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerNetworkManager: {fileID: 0}
   characterController: {fileID: 0}
   attributeSet: {fileID: 0}
 --- !u!114 &-3108170285353798612
@@ -1149,7 +1148,6 @@ MonoBehaviour:
   MoveAmount: 0
   WalkingSpeed: 2
   RunningSpeed: 5
-  RotationSpeed: 15
   _movementScope: 0
   _lockY: 0
 --- !u!114 &6356203467910903130
@@ -1191,6 +1189,28 @@ MonoBehaviour:
   NetworkPositionVelocity: {x: 0, y: 0, z: 0}
   NetworkPositionSmoothTime: 0.1
   NetworkRotationSmoothTime: 0.1
+--- !u!195 &-2561047716478872670
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &4470164093591359349
 GameObject:
   m_ObjectHideFlags: 0

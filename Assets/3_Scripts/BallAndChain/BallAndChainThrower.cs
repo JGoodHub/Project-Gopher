@@ -16,30 +16,23 @@ public class BallAndChainThrower : MonoBehaviour
     }
 
     private void Update()
-{
-    if (Input.GetButtonDown("Fire1") && _attributeSet.heldChains > 0)
     {
-        Vector3 target = RaycastPlane.QueryPlane();
-        
-        Debug.DrawLine(transform.position, target, Color.green, 5f);
-
-        ThrowChain(target);
+        FireChain();
     }
-}
 
-    // public void FireChain()
-    // {
-    //     if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0)
-    //     {
-    //         Vector3 target = RaycastPlane.QueryPlane();
+    public void FireChain()
+    {
+        if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0))
+        {
+            Vector3 target = RaycastPlane.QueryPlane();
 
-    //         Debug.DrawLine(transform.position, target, Color.green, 5f);
+            Debug.DrawLine(transform.position, target, Color.green, 5f);
 
-    //         ThrowChain(target);
-    //     }
-    // }
+            ThrowChain(target);
+        }
+    }
 
-    private void ThrowChain(Vector3 target)
+    public void ThrowChain(Vector3 target)
     {
         ThrowableBallAndChain chain = Instantiate(_chainPrefab).GetComponent<ThrowableBallAndChain>();
 
@@ -50,8 +43,8 @@ public class BallAndChainThrower : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(startPosition, direction, out hit, _range))
         {
-            if (hit.collider.gameObject.tag != "Player" && hit.collider.gameObject.tag != "OtherPlayers"
-                && hit.collider.gameObject.tag != "Grid")
+            if (!hit.collider.gameObject.CompareTag("Player") && !hit.collider.gameObject.CompareTag("OtherPlayers")
+                                                              && !hit.collider.gameObject.CompareTag("Grid"))
             {
                 endPosition = hit.point;
             }
