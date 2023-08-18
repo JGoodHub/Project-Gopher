@@ -13,17 +13,14 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-
     public enum MenuPanel
     {
-
         Splash,
         LobbySelection,
         LobbyCreator,
         LobbyLoading,
         LobbyViewer,
         MatchLoading
-
     }
 
     [Header("Panels")]
@@ -56,15 +53,14 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button _startLobbyButton;
     [SerializeField] private TextMeshProUGUI _lobbyPlayerCountText;
 
-    private void Awake()
-    {
-        if (Preloader.NetworkManager == null)
-            SceneManager.LoadScene("Preloader");
-    }
-
     // Start is called before the first frame update
-    private void Start()
+    private IEnumerator Start()
     {
+        if (Preloader.IsServer)
+            yield break;
+
+        yield return new WaitUntil(() => HathoraService.Singleton.APIReady);
+
         SetActivePanel(MenuPanel.Splash);
 
         _startButton.onClick.AddListener(GoToLobbySelectionPanel);
@@ -154,6 +150,8 @@ public class MainMenu : MonoBehaviour
     private void ClientConnectedToRoomServer(ulong clientID)
     {
         Debug.Log("Connector to the server");
+
+        SetActivePanel(MenuPanel.LobbyViewer);
     }
 
     private void GoToLobbyCreationPanel()
@@ -205,5 +203,4 @@ public class MainMenu : MonoBehaviour
     {
         NetworkManager.Singleton.StartHost();
     }
-
 }

@@ -12,20 +12,15 @@ using Hathora.Core.Scripts.Runtime.Client.Models;
 
 public class HathoraService : MonoBehaviour
 {
-
     public struct RoomConfig
     {
-
         public string RoomName;
         public int MaxPlayers;
-
     }
 
     public struct RoomState
     {
-
         public int CurrentPlayers;
-
     }
 
     private static HathoraService _singleton;
@@ -40,6 +35,10 @@ public class HathoraService : MonoBehaviour
 
     private string _authToken;
 
+    private bool _apiReady;
+
+    public bool APIReady => _apiReady;
+
     private void Start()
     {
         Configuration sdkConfiguration = new Configuration();
@@ -47,6 +46,8 @@ public class HathoraService : MonoBehaviour
         _authApi.Init(_clientConfig, sdkConfiguration);
         _lobbyApi.Init(_clientConfig, sdkConfiguration);
         _roomApi.Init(_clientConfig, sdkConfiguration);
+
+        _apiReady = true;
     }
 
     public async void Login(Action OnSuccess = null, Action OnError = null)
@@ -59,9 +60,10 @@ public class HathoraService : MonoBehaviour
             Debug.Log($"[{GetType()}]: Auth token set to {_authToken}");
             OnSuccess?.Invoke();
         }
-        catch
+        catch (Exception e)
         {
             Debug.LogError($"[{GetType()}]: Error when attempting to login");
+            Debug.LogError($"{e.Message}\n{e.StackTrace}");
             OnError?.Invoke();
         }
     }
@@ -133,5 +135,4 @@ public class HathoraService : MonoBehaviour
             OnError?.Invoke();
         }
     }
-
 }

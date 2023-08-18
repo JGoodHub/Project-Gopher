@@ -7,10 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class Preloader : MonoBehaviour
 {
-
     private static NetworkManager _networkManager;
 
     public static NetworkManager NetworkManager => _networkManager;
+
+    private static bool _isServer;
+
+    public static bool IsServer => _isServer;
 
     private void Awake()
     {
@@ -27,11 +30,11 @@ public class Preloader : MonoBehaviour
         {
             Debug.Log($"[{GetType()}]: Starting application in server mode");
             _networkManager.StartServer();
+            _isServer = true;
             return;
         }
 
-        Debug.Log($"[{GetType()}]: Starting application in client mode");
-        SceneManager.LoadScene("Menu");
+        Debug.Log($"[{GetType()}]: Waiting to starting application in client mode");
     }
 
     private static Dictionary<string, string> GetCommandlineArgs()
@@ -54,5 +57,4 @@ public class Preloader : MonoBehaviour
 
         return argDictionary;
     }
-
 }
