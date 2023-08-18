@@ -72,6 +72,8 @@ MonoBehaviour:
   _bobRate: 1.2
   _bobRange: 0.15
   _spinRate: 50
+  clip: {fileID: 8300000, guid: 5db2845875f167840b141cac3e0bbdc4, type: 3}
+  volume: 0.5
 --- !u!1 &959397324236722141
 GameObject:
   m_ObjectHideFlags: 0

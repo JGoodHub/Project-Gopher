@@ -14,7 +14,7 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
 
     public float VerticalMovement;
     public float MoveAmount;
-
+    public AudioSource footstepsSound;
     private Vector3 MoveDirection;
 
     [SerializeField] public float WalkingSpeed = 2.5f;
@@ -70,10 +70,12 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
         if (MoveAmount > 0.5f)
         {
             characterManager.characterController.Move(combinedMove * RunningSpeed * Time.deltaTime);
+            footstepsSound.enabled = true;
         }
         else if (MoveAmount <= 0.5f)
         {
             characterManager.characterController.Move(combinedMove * WalkingSpeed * Time.deltaTime);
+            footstepsSound.enabled = false;
         }
     }
 
@@ -87,3 +89,4 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
         }
     }
 }
+
