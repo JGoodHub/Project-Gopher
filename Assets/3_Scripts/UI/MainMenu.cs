@@ -1,7 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Hathora.Cloud.Sdk.Model;
+using Hathora.Core.Scripts.Runtime.Client.Models;
 using TMPro;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,8 +20,9 @@ public class MainMenu : MonoBehaviour
         Splash,
         LobbySelection,
         LobbyCreator,
+        LobbyLoading,
         LobbyViewer,
-        LoadingMatch
+        MatchLoading
 
     }
 
@@ -24,6 +30,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _splashPanel;
     [SerializeField] private GameObject _lobbySelectionPanel;
     [SerializeField] private GameObject _lobbyCreatorPanel;
+    [SerializeField] private GameObject _lobbyLoadingPanel;
     [SerializeField] private GameObject _lobbyViewerPanel;
 
     [Header("Splash")]
@@ -33,6 +40,7 @@ public class MainMenu : MonoBehaviour
     [Header("Lobby Selection")]
     [SerializeField] private RectTransform _lobbyItemsContainer;
     [SerializeField] private GameObject _lobbyItemPrefab;
+    [SerializeField] private Button _refreshLobbiesButton;
     [SerializeField] private Button _openLobbyCreatorButton;
 
     [Header("Lobby Creator")]
@@ -48,6 +56,12 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button _startLobbyButton;
     [SerializeField] private TextMeshProUGUI _lobbyPlayerCountText;
 
+    private void Awake()
+    {
+        if (Preloader.NetworkManager == null)
+            SceneManager.LoadScene("Preloader");
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -55,9 +69,25 @@ public class MainMenu : MonoBehaviour
 
         _startButton.onClick.AddListener(GoToLobbySelectionPanel);
 
-        _openLobbyCreatorButton.onClick.AddListener(GetToLobbyCreationPanel);
+        _refreshLobbiesButton.onClick.AddListener(GoToLobbySelectionPanel);
+
+        _openLobbyCreatorButton.onClick.AddListener(GoToLobbyCreationPanel);
 
         _backToLobbySelectionButton.onClick.AddListener(() => SetActivePanel(MenuPanel.LobbySelection));
+
+        _createLobbyButton.onClick.AddListener(CreateLobby);
+
+        Login();
+    }
+
+    private void Login()
+    {
+        _startButton.interactable = false;
+
+        HathoraService.Singleton.Login(() =>
+        {
+            _startButton.interactable = true;
+        });
     }
 
     private void GoToLobbySelectionPanel()
@@ -66,18 +96,93 @@ public class MainMenu : MonoBehaviour
 
         // Code here to create a lobby item for each lobby on the server
         // Pass in the JoinLobbyRoom as a callback
+
+        foreach (Transform child in _lobbyItemsContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        HathoraService.Singleton.GetPublicLobbies((lobbies =>
+        {
+            foreach (Lobby lobby in lobbies)
+            {
+                CreateLobbyItem(lobby);
+            }
+        }));
     }
 
-    private void JoinRoom()
+    private void CreateLobbyItem(Lobby lobby)
     {
-        SetActivePanel(MenuPanel.LobbyViewer);
+        LobbyRoomItem lobbyItem = Instantiate(_lobbyItemPrefab, _lobbyItemsContainer).GetComponent<LobbyRoomItem>();
 
-        // Code here to create a player item for each person in the lobby
+        HathoraService.RoomConfig roomConfig = JsonUtility.FromJson<HathoraService.RoomConfig>(lobby.InitialConfig.ToString());
+
+        lobbyItem.Initialise(lobby.RoomId, roomConfig.RoomName, roomConfig.MaxPlayers, JoinRoom);
     }
 
-    private void GetToLobbyCreationPanel()
+    private void JoinRoom(string roomID)
+    {
+        SetActivePanel(MenuPanel.LobbyLoading);
+
+        HathoraService.Singleton.GetConnectionInfo(roomID, connectionInfo =>
+        {
+            JoinRoom(roomID, connectionInfo);
+        });
+    }
+
+    private void JoinRoom(string roomID, ConnectionInfoV2 connectionInfo)
+    {
+        SetActivePanel(MenuPanel.LobbyLoading);
+
+        // Code here to connect to the unity server running on the room instance
+        UnityTransport unityTransport = Preloader.NetworkManager.GetComponent<UnityTransport>();
+
+        IPAddress[] hostAddresses = Dns.GetHostAddresses(connectionInfo.ExposedPort.Host);
+
+        if (hostAddresses.Length == 0)
+        {
+            Debug.LogError($"[{GetType()}]: Failed to resolve host name to ip address");
+        }
+
+        unityTransport.SetConnectionData(hostAddresses[0].ToString(), (ushort) connectionInfo.ExposedPort.Port);
+
+        Preloader.NetworkManager.OnClientConnectedCallback += ClientConnectedToRoomServer;
+
+        Preloader.NetworkManager.StartClient();
+    }
+
+    private void ClientConnectedToRoomServer(ulong clientID)
+    {
+        Debug.Log("Connector to the server");
+    }
+
+    private void GoToLobbyCreationPanel()
     {
         SetActivePanel(MenuPanel.LobbyCreator);
+    }
+
+    private void CreateLobby()
+    {
+        string roomName = _roomNameField.text;
+
+        int maxPlayers = 10;
+
+        if (int.TryParse(_maxPlayersField.text, out int inputMaxPlayers))
+            maxPlayers = inputMaxPlayers;
+
+        HathoraService.Singleton.CreateLobby(new HathoraService.RoomConfig
+        {
+            RoomName = roomName,
+            MaxPlayers = maxPlayers
+        }, lobby =>
+        {
+            SetActivePanel(MenuPanel.LobbyLoading);
+
+            HathoraService.Singleton.GetConnectionInfo(lobby.RoomId, connectionInfo =>
+            {
+                JoinRoom(connectionInfo.RoomId, connectionInfo);
+            });
+        });
     }
 
     private void SetActivePanel(MenuPanel menuPanel)
@@ -85,6 +190,7 @@ public class MainMenu : MonoBehaviour
         _splashPanel.SetActive(menuPanel == MenuPanel.Splash);
         _lobbySelectionPanel.SetActive(menuPanel == MenuPanel.LobbySelection);
         _lobbyCreatorPanel.SetActive(menuPanel == MenuPanel.LobbyCreator);
+        _lobbyLoadingPanel.SetActive(menuPanel == MenuPanel.LobbyLoading);
         _lobbyViewerPanel.SetActive(menuPanel == MenuPanel.LobbyViewer);
     }
 

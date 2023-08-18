@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -7,30 +8,37 @@ using UnityEngine.SceneManagement;
 public class Preloader : MonoBehaviour
 {
 
+    private static NetworkManager _networkManager;
+
+    public static NetworkManager NetworkManager => _networkManager;
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+
+        _networkManager = GetComponent<NetworkManager>();
+    }
+
     private void Start()
     {
         Dictionary<string, string> args = GetCommandlineArgs();
 
-        if (args.TryGetValue("-mode", out string mode))
+        if (args.TryGetValue("-mode", out string mode) && mode == "server")
         {
-            if (mode == "server")
-            {
-                Debug.Log($"[{GetType()}]: Starting application in server mode");
-                SceneManager.LoadScene("Server");
-            }
-            else
-            {
-                Debug.Log($"[{GetType()}]: Starting application in client mode");
-                SceneManager.LoadScene("Menu");
-            }
+            Debug.Log($"[{GetType()}]: Starting application in server mode");
+            _networkManager.StartServer();
+            return;
         }
+
+        Debug.Log($"[{GetType()}]: Starting application in client mode");
+        SceneManager.LoadScene("Menu");
     }
 
     private static Dictionary<string, string> GetCommandlineArgs()
     {
         Dictionary<string, string> argDictionary = new Dictionary<string, string>();
 
-        string[] args = System.Environment.GetCommandLineArgs();
+        string[] args = Environment.GetCommandLineArgs();
 
         for (int i = 0; i < args.Length; ++i)
         {
