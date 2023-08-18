@@ -14,6 +14,7 @@ public class PickupSpawner : MonoBehaviour
     {
         targetTime = Random.Range(5.0f, 30.0f);
     }
+
     private void Update()
     {
         targetTime -= Time.deltaTime;
@@ -30,7 +31,6 @@ public class PickupSpawner : MonoBehaviour
         {
             hasChild = false;
         }
-
     }
 
     public void timerEnded()
@@ -43,6 +43,4 @@ public class PickupSpawner : MonoBehaviour
         }    
         targetTime = 15.0f;
     }
-
 }
-
