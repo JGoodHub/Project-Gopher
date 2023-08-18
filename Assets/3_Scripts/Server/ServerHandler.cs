@@ -73,6 +73,6 @@ public class ServerHandler : NetworkBehaviour
     public void SpawnPlayerPrefabServerRpc(Vector3 position, ServerRpcParams rpcParams = default)
     {
         GameObject playerObject = Instantiate(_playerPrefab, position, Quaternion.identity);
-        playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(rpcParams.Receive.SenderClientId);
+        playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(rpcParams.Receive.SenderClientId, true);
     }
 }

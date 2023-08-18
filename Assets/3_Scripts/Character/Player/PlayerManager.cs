@@ -15,14 +15,7 @@ public class PlayerManager : CharacterManager
     protected override void Awake()
     {
         base.Awake();
-        // if (instance == null)
-        // {
-        //     instance = this;
-        // }
-        // else
-        // {
-        //     Destroy(gameObject);
-        // }
+        
         _playerNetworkManager = GetComponent<PlayerNetworkManager>();
         _playerCamera = GetComponentInChildren<PlayerCamera>();
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
@@ -45,21 +38,21 @@ public class PlayerManager : CharacterManager
 
     private void UpdateNetworkVariables()
     {
-        if (_playerNetworkManager != null && _playerNetworkManager.NetworkPosition != null && _playerNetworkManager.NetworkRotation != null)
+        if (_playerNetworkManager == null || _playerNetworkManager.NetworkPosition == null || _playerNetworkManager.NetworkRotation == null)
+            return;
+        
+        if (IsOwner)
         {
-            if (IsOwner)
-            {
-                _playerNetworkManager.NetworkPosition.Value = transform.position;
-                _playerNetworkManager.NetworkRotation.Value = transform.rotation;
-            }
-            else
-            {
-                transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
-                    ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
+            _playerNetworkManager.NetworkPosition.Value = transform.position;
+            _playerNetworkManager.NetworkRotation.Value = transform.rotation;
+        }
+        else
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
+                ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
 
-                transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
-                    _playerNetworkManager.NetworkRotationSmoothTime);
-            }
+            transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
+                _playerNetworkManager.NetworkRotationSmoothTime);
         }
     }
 }

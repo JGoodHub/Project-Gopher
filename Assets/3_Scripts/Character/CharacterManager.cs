@@ -28,27 +28,18 @@ public class CharacterManager : NetworkBehaviour
         // ThrowChain();
 
         // handles stun effect
-        if(attributeSet.isStunned && currentStunEffect == null)
+        if (attributeSet.isStunned && currentStunEffect == null)
         {
             // Add an offset to the Y position so the effect appears above the character
             Vector3 effectPosition = transform.position + new Vector3(0, 2.0f, 0);
             // Instantiate the effect and parent it to this character
             currentStunEffect = Instantiate(stunEffectPrefab, effectPosition, Quaternion.identity, transform);
         }
-        else if(!attributeSet.isStunned && currentStunEffect != null)
+        else if (!attributeSet.isStunned && currentStunEffect != null)
         {
             // Destroy the effect when the stun ends
             Destroy(currentStunEffect);
             currentStunEffect = null;
         }
     }
-
-    // protected void ThrowChain()
-    // {
-    //     if (IsOwner && Input.GetButtonDown("Fire1"))
-    //     {
-    //         Debug.Log("throwing");
-    //         _ballAndChainThrower.FireChain();
-    //     }
-    // }    
 }
