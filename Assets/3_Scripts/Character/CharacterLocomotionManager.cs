@@ -20,7 +20,7 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
 
     [SerializeField] public float WalkingSpeed = 2.5f;
     [SerializeField] public float RunningSpeed = 5.0f;
-    [SerializeField] private float RotationSpeed = 15.0f;
+    // [SerializeField] private float RotationSpeed = 15.0f;
     private const float gravity = -9.81f;
     private const float groundOffset = 0.1f;
 

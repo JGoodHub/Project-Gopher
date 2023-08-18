@@ -12,7 +12,6 @@ public class CharacterManager : NetworkBehaviour
     public CharacterController characterController;
     public AttributeSet attributeSet;
     protected BallAndChainThrower _ballAndChainThrower;
-    
 
     protected virtual void Awake()
     {
@@ -24,15 +23,15 @@ public class CharacterManager : NetworkBehaviour
 
     protected virtual void Update()
     {
-        ThrowChain();
+        // ThrowChain();
     }
 
-    protected void ThrowChain()
-    {
-        if (IsOwner && Input.GetButtonDown("Fire1"))
-        {
-            Debug.Log("throwing");
-            _ballAndChainThrower.FireChain();
-        }
-    }    
+    // protected void ThrowChain()
+    // {
+    //     if (IsOwner && Input.GetButtonDown("Fire1"))
+    //     {
+    //         Debug.Log("throwing");
+    //         _ballAndChainThrower.FireChain();
+    //     }
+    // }    
 }

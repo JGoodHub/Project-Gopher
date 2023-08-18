@@ -8,7 +8,6 @@ using UnityEngine.TextCore.Text;
 
 public class PlayerManager : CharacterManager
 {
-
     [SerializeField] private PlayerNetworkManager _playerNetworkManager;
     private PlayerCamera _playerCamera;
     private PlayerLocomotionManager _playerLocomotionManager;
@@ -41,23 +40,26 @@ public class PlayerManager : CharacterManager
         _playerLocomotionManager.HandleAllMovement();
         _playerCamera.AttachToPlayerAndFollow();
         UpdateNetworkVariables();
-        ThrowChain();
+        // ThrowChain();
     }
 
     private void UpdateNetworkVariables()
     {
-        if (IsOwner)
+        if (_playerNetworkManager != null && _playerNetworkManager.NetworkPosition != null && _playerNetworkManager.NetworkRotation != null)
         {
-            _playerNetworkManager.NetworkPosition.Value = transform.position;
-            _playerNetworkManager.NetworkRotation.Value = transform.rotation;
-        }
-        else
-        {
-            transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
-                ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
-        
-            transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
-                _playerNetworkManager.NetworkRotationSmoothTime);
+            if (IsOwner)
+            {
+                _playerNetworkManager.NetworkPosition.Value = transform.position;
+                _playerNetworkManager.NetworkRotation.Value = transform.rotation;
+            }
+            else
+            {
+                transform.position = Vector3.SmoothDamp(transform.position, _playerNetworkManager.NetworkPosition.Value,
+                    ref _playerNetworkManager.NetworkPositionVelocity, _playerNetworkManager.NetworkPositionSmoothTime);
+            
+                transform.rotation = Quaternion.Slerp(transform.rotation, _playerNetworkManager.NetworkRotation.Value,
+                    _playerNetworkManager.NetworkRotationSmoothTime);
+            }
         }
     }   
 }

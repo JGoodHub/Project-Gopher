@@ -31,10 +31,12 @@ public class BallAndChainFK : MonoBehaviour
     {
         for (int i = 0; i < Random.Range(0, 8); i++)
         {
-            Destroy(_links[1].gameObject);
-
-            _links.RemoveAt(1);
-            _linksLengths.RemoveAt(1);
+            if (_links.Count > 1)
+            {
+                Destroy(_links[1].gameObject);
+                _links.RemoveAt(1);
+                _linksLengths.RemoveAt(1);
+            }
         }
     }
 
@@ -69,7 +71,7 @@ public class BallAndChainFK : MonoBehaviour
         if (_links.Count < 2 || _linksLengths.Count != _links.Count - 1)
             return;
 
-        for (int i = 1; i < _links.Count; i++)
+        for (int i = 0; i < _links.Count; i++)
         {
             Vector3 dirToThisLink = _links[i].position - _links[i - 1].position;
             _links[i].transform.position = _links[i - 1].position + (dirToThisLink.normalized * _linksLengths[i - 1]);

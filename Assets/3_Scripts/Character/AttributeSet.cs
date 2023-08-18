@@ -29,8 +29,8 @@ public class AttributeSet : MonoBehaviour
         }
     }
 
-    private int _dashes = 2;
-    private int _maxDashes = 2; // maybe power-ups can alter this
+    // private int _dashes = 2;
+    // private int _maxDashes = 2;
 
     private float _health;
 
