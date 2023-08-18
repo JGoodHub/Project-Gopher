@@ -22,7 +22,7 @@ public class BallAndChainThrower : MonoBehaviour
 
     public void FireChain()
     {
-        if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0) && gameObject.CompareTag("Player"))
+        if (Input.GetButtonDown("Fire1") && (_attributeSet.heldChains > 0) && gameObject.CompareTag("Player") && (_attributeSet.isStunned == false))
         {
             Vector3 target = RaycastPlane.QueryPlane();
 
@@ -55,5 +55,16 @@ public class BallAndChainThrower : MonoBehaviour
         chain.Initialise(startPosition, endPosition);
 
         _attributeSet.heldChains--;
+    }
+
+    public void ThrowAllChainsRandomly()
+    {
+        while (_attributeSet.heldChains > 0)
+        {
+            Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), 0, UnityEngine.Random.Range(-1f, 1f)).normalized;
+            Vector3 target = transform.position + randomDirection * _range;
+
+            ThrowChain(target);
+        }
     }
 }

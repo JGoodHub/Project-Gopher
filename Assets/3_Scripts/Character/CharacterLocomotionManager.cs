@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 public abstract class CharacterLocomotionManager : NetworkBehaviour
 {
     protected CharacterManager characterManager;
-    
 
     [Header("Movement Values")] // These do not have to be here but I like having a copy to use
     public float HorizontalMovement;
@@ -20,7 +19,8 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
 
     [SerializeField] public float WalkingSpeed = 2.5f;
     [SerializeField] public float RunningSpeed = 5.0f;
-    // [SerializeField] private float RotationSpeed = 15.0f;
+    public bool canRotate = true;
+
     private const float gravity = -9.81f;
     private const float groundOffset = 0.1f;
 
@@ -82,8 +82,11 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
     private void HandleRotationMovement()
     {
         if (!Application.isFocused) return;
-        Vector3 mousePosition = RaycastPlane.QueryPlane();
-        characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
+        if(canRotate) {
+            Vector3 mousePosition = RaycastPlane.QueryPlane();
+
+            characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
+        }
     }
 }
 
