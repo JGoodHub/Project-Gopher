@@ -15,7 +15,7 @@ public class AttributeSet : MonoBehaviour
 
     public int maxHeldChains = 5;
 
-    public int _heldChains;
+    private int _heldChains;
     public int heldChains
     {
         get => _heldChains;

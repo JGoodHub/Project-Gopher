@@ -27,11 +27,7 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
     [SerializeField] private Space _movementScope;
     [SerializeField] private bool _lockY;
 
-    private void Awake()
-    {
-        characterManager = GetComponent<PlayerManager>();
-    }
-
+    protected abstract void Awake();
 
     public void HandleAllMovement()
     {
