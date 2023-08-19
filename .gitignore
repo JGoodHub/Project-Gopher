@@ -25,6 +25,7 @@
 
 # Visual Studio cache directory
 .vs/
+.vsconfig
 
 #Rider
 .idea/
@@ -74,7 +75,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-
 # HathoraServerConfig: !ignore template, ignore others
 HathoraServerConfig*.asset*
 !HathoraServerConfig*.template.asset*
@@ -85,6 +85,5 @@ HathoraServerConfig*.asset*
 src/Assets/Hathora/Core/Scripts/Editor/Common/SuperSave.*
 *.*~
 src/.hathora/LocalContainer
+Build-Client/
 Build-Server/
-
-.vsconfig

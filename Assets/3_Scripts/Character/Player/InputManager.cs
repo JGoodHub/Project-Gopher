@@ -1,72 +1,50 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerInputManager : MonoBehaviour
+public class InputManager : MonoBehaviour
 {
-    public static PlayerInputManager instance;
+
+    private static InputManager _singleton;
+    public static InputManager Singleton => _singleton ??= FindObjectOfType<InputManager>(true);
+
     private PlayerControls playerControls;
 
-    [Header("Movement Input")] 
+    [Header("Movement Input")]
     [SerializeField] private Vector2 MovementInput;
     public float HorizontalInput;
     public float VerticalInput;
     public float MoveAmount;
 
-    [Header("Camera Input")] 
+    [Header("Camera Input")]
     [SerializeField] private Vector2 CameraInput;
     private float CameraHorizontalInput, CameraVerticalInput;
-    
 
-
- private void Awake()
+    private void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        playerControls ??= new PlayerControls();
+
+        playerControls.Movement.Movement.performed += i => MovementInput = i.ReadValue<Vector2>();
+        playerControls.Camera.Camera.performed += i => CameraInput = i.ReadValue<Vector2>();
+
+        playerControls.Enable();
     }
 
- private void Start()
- {
-     DontDestroyOnLoad(gameObject);
- }
-
-
- private void OnEnable()
- {
-     if (playerControls == null)
-     {
-         playerControls = new PlayerControls();
-
-         playerControls.Movement.Movement.performed += i => MovementInput = i.ReadValue<Vector2>();
-         playerControls.Camera.Camera.performed += i => CameraInput = i.ReadValue<Vector2>();
-     }
-     playerControls.Enable();
-        
- }
-
- void Update()
+    private void Update()
     {
-        HandleMovementInput();
-        HandleCameraInput();
+        StoreMovementInput();
+        StoreCameraInput();
     }
-    
- 
 
- private void HandleMovementInput()
+    private void StoreMovementInput()
     {
         HorizontalInput = MovementInput.x;
         VerticalInput = MovementInput.y;
-        
 
         MoveAmount = Mathf.Clamp01(Mathf.Abs(HorizontalInput) + Mathf.Abs(VerticalInput));
-        
+
         // OPTIONAL CLAMPING 
         if (MoveAmount <= 0.5 && MoveAmount > 0)
         {
@@ -78,12 +56,10 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    private void HandleCameraInput()
+    private void StoreCameraInput()
     {
         CameraHorizontalInput = CameraInput.x;
         CameraVerticalInput = CameraInput.y;
     }
-    
 
-    
 }

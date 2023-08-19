@@ -7,11 +7,11 @@ using UnityEngine.InputSystem;
 
 public abstract class CharacterLocomotionManager : NetworkBehaviour
 {
+
     protected CharacterManager characterManager;
 
     [Header("Movement Values")] // These do not have to be here but I like having a copy to use
     public float HorizontalMovement;
-
     public float VerticalMovement;
     public float MoveAmount;
 
@@ -25,19 +25,21 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
     private const float groundOffset = 0.1f;
 
     [SerializeField] private Space _movementScope;
-    [SerializeField] private bool _lockY;
+
+    private float verticalVelocity = 0f;
 
     protected abstract void Awake();
 
     public void HandleAllMovement()
     {
+        if (IsOwner == false)
+            return;
+
         HandleGroundedMovement();
         HandleRotationMovement();
     }
 
     protected abstract void GetMovementValues();
-
-    private float verticalVelocity = 0f;
 
     private void HandleGroundedMovement()
     {
@@ -54,9 +56,9 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
         }
 
         MoveDirection.Normalize();
-        
+
         // gravity
-        if(characterManager.characterController.isGrounded)
+        if (characterManager.characterController.isGrounded)
         {
             verticalVelocity = -groundOffset;
         }
@@ -67,23 +69,19 @@ public abstract class CharacterLocomotionManager : NetworkBehaviour
 
         Vector3 combinedMove = MoveDirection + Vector3.up * verticalVelocity;
 
-        if (MoveAmount > 0.5f)
-        {
-            characterManager.characterController.Move(combinedMove * RunningSpeed * Time.deltaTime);
-        }
-        else if (MoveAmount <= 0.5f)
-        {
-            characterManager.characterController.Move(combinedMove * WalkingSpeed * Time.deltaTime);
-        }
+        float movingSpeed = MoveAmount < 0.5f ? WalkingSpeed : RunningSpeed;
+        characterManager.characterController.Move(combinedMove * movingSpeed * Time.deltaTime);
     }
 
     private void HandleRotationMovement()
     {
-        if (!Application.isFocused) return;
-        if(canRotate) {
-            Vector3 mousePosition = RaycastPlane.QueryPlane();
+        if (Application.isFocused == false ||
+            canRotate == false)
+            return;
 
-            characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
-        }
+        Vector3 mousePosition = RaycastPlane.QueryPlane();
+
+        characterManager.characterController.transform.LookAt(mousePosition, Vector3.up);
     }
+
 }

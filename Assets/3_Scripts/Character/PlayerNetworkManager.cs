@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerNetworkManager : NetworkBehaviour
 {
+
     [Header("Position")]
     public NetworkVariable<Vector3> NetworkPosition = new NetworkVariable<Vector3>(Vector3.zero,
         NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -15,4 +16,5 @@ public class PlayerNetworkManager : NetworkBehaviour
     public Vector3 NetworkPositionVelocity;
     public float NetworkPositionSmoothTime = 0.1f;
     public float NetworkRotationSmoothTime = 0.1f;
+
 }

@@ -8,22 +8,21 @@ using UnityEngine.TextCore.Text;
 
 public class PlayerManager : CharacterManager
 {
+
     [SerializeField] private PlayerNetworkManager _playerNetworkManager;
-    private PlayerCamera _playerCamera;
     private PlayerLocomotionManager _playerLocomotionManager;
 
     protected override void Awake()
     {
         base.Awake();
-        
+
         _playerNetworkManager = GetComponent<PlayerNetworkManager>();
-        _playerCamera = GetComponentInChildren<PlayerCamera>();
         _playerLocomotionManager = GetComponent<PlayerLocomotionManager>();
     }
 
     private IEnumerator Start()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         PlayerCamera.Singleton.SetPlayerTarget(this);
     }
@@ -31,16 +30,17 @@ public class PlayerManager : CharacterManager
     protected override void Update()
     {
         base.Update();
+
         _playerLocomotionManager.HandleAllMovement();
+
         UpdateNetworkVariables();
-        // ThrowChain();
     }
 
     private void UpdateNetworkVariables()
     {
         if (_playerNetworkManager == null || _playerNetworkManager.NetworkPosition == null || _playerNetworkManager.NetworkRotation == null)
             return;
-        
+
         if (IsOwner)
         {
             _playerNetworkManager.NetworkPosition.Value = transform.position;
@@ -55,4 +55,5 @@ public class PlayerManager : CharacterManager
                 _playerNetworkManager.NetworkRotationSmoothTime);
         }
     }
+
 }

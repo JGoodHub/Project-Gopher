@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerLocomotionManager : CharacterLocomotionManager
 {
+
     protected override void Awake()
     {
         characterManager = GetComponent<PlayerManager>();
@@ -12,8 +13,12 @@ public class PlayerLocomotionManager : CharacterLocomotionManager
 
     protected override void GetMovementValues()
     {
-        HorizontalMovement = PlayerInputManager.instance.HorizontalInput;
-        VerticalMovement = PlayerInputManager.instance.VerticalInput;
-        MoveAmount = PlayerInputManager.instance.MoveAmount;
+        if (IsOwner == false)
+            return;
+
+        HorizontalMovement = InputManager.Singleton.HorizontalInput;
+        VerticalMovement = InputManager.Singleton.VerticalInput;
+        MoveAmount = InputManager.Singleton.MoveAmount;
     }
+
 }
