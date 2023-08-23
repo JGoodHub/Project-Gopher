@@ -5,9 +5,8 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Preloader : MonoBehaviour
+public class ClientServerSwitcher : MonoBehaviour
 {
-   
 
     private void Awake()
     {
@@ -47,4 +46,5 @@ public class Preloader : MonoBehaviour
 
         return argDictionary;
     }
+
 }
