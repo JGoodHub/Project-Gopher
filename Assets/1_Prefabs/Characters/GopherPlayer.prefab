@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7476149181650233841}
   - component: {fileID: 7348318217659856676}
+  - component: {fileID: 8121830230570095914}
+  - component: {fileID: 3566509782417481303}
   - component: {fileID: 9083096032209675866}
   - component: {fileID: 5648499095729122039}
   - component: {fileID: 8391855073969680778}
@@ -62,6 +64,48 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &8121830230570095914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae04d3c170033dc40bc7f1ae65ac5185, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 0
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
+--- !u!114 &3566509782417481303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4175639243323000349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!54 &9083096032209675866
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,7 +197,6 @@ MonoBehaviour:
   characterController: {fileID: 8391855073969680778}
   attributeSet: {fileID: 6512117526970127037}
   stunEffectPrefab: {fileID: 0}
-  _playerNetworkManager: {fileID: 0}
 --- !u!114 &6572393028455383709
 MonoBehaviour:
   m_ObjectHideFlags: 0
