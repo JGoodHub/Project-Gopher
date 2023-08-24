@@ -979,7 +979,7 @@ GameObject:
   - component: {fileID: 164560290}
   - component: {fileID: 164560289}
   m_Layer: 0
-  m_Name: Preloader
+  m_Name: ClinetServerSwitcher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10950,7 +10950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadf5ba93f21c6542902806665208bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _clientConfig: {fileID: 11400000, guid: 758ef4b681567fb488c04c2dcf920e7a, type: 2}
+  _clientConfig: {fileID: 11400000, guid: 5cab79885b3e78b49b762d0cb0ecf318, type: 2}
   _authApi: {fileID: 1287596558}
   _lobbyApi: {fileID: 1287596557}
   _roomApi: {fileID: 1287596556}

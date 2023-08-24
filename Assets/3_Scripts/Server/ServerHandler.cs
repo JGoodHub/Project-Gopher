@@ -1,25 +1,32 @@
 using System;
 using System.Net;
+using Hathora.Cloud.Sdk.Model;
 using Unity.Mathematics;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class ServerHandler : NetworkBehaviour
 {
+    [Serializable]
+    public class RoomState
+    {
+        public int CurrentPlayers;
+    }
+
     private static ServerHandler _singleton;
 
     public static ServerHandler Singleton => _singleton;
 
+    [SerializeField] private GameObject _playerPrefab;
+
     private static bool _runningAsServer;
+    private RoomState _roomState;
+
+    private Action<ulong> _connectionEstablishedToServerCallback;
 
     public static bool RunningAsServer => _runningAsServer;
-
-    private Action<ulong> _onConnectedCallback;
-
-    [SerializeField] private GameObject _playerPrefab;
 
     private void Awake()
     {
@@ -27,14 +34,34 @@ public class ServerHandler : NetworkBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    #region Server code
+
     public void SetupAsServer()
     {
+        _runningAsServer = true;
+        _roomState = new RoomState();
+
         Debug.Log($"[{GetType()}]: Starting application in server mode");
         NetworkManager.StartServer();
-        _runningAsServer = true;
+
+        NetworkManager.OnClientConnectedCallback += ClientConnectedToServer;
     }
 
-    public void SetupAsClient(string host, ushort port, Action<ulong> onConnectedCallback)
+    private void ClientConnectedToServer(ulong clientID)
+    {
+        // Update the room state to include the new player
+        Debug.Log($"[{GetType()}]: Client connected to server {clientID}");
+
+        SetLobbyStateRequest setLobbyStateRequest = new SetLobbyStateRequest(JsonUtility.ToJson(_roomState));
+        
+        HathoraService.Singleton.SetLobbyState();
+    }
+
+    #endregion
+
+    #region Client code
+
+    public void SetupAsClient(string host, ushort port, Action<ulong> connectionEstablishedToServerCallback)
     {
         UnityTransport unityTransport = NetworkManager.GetComponent<UnityTransport>();
 
@@ -47,20 +74,22 @@ public class ServerHandler : NetworkBehaviour
 
         unityTransport.SetConnectionData(hostAddresses[0].ToString(), port);
 
-        NetworkManager.OnClientConnectedCallback += ClientConnectedToRoomServer;
-
-        _onConnectedCallback = onConnectedCallback;
+        _connectionEstablishedToServerCallback = connectionEstablishedToServerCallback;
+        NetworkManager.OnClientConnectedCallback += ConnectionEstablishedToServer;
 
         NetworkManager.StartClient();
     }
 
-    private void ClientConnectedToRoomServer(ulong clientID)
+    private void ConnectionEstablishedToServer(ulong clientID)
     {
-        NetworkManager.OnClientConnectedCallback -= ClientConnectedToRoomServer;
+        NetworkManager.OnClientConnectedCallback -= ConnectionEstablishedToServer;
 
-        _onConnectedCallback?.Invoke(clientID);
+        _connectionEstablishedToServerCallback?.Invoke(clientID);
     }
 
+    #endregion
+
+    #region Server RPCs
 
     [ServerRpc(RequireOwnership = false)]
     public void StartMatchServerRpc()
@@ -76,4 +105,6 @@ public class ServerHandler : NetworkBehaviour
         GameObject playerObject = Instantiate(_playerPrefab, position, Quaternion.identity);
         playerObject.GetComponent<NetworkObject>().SpawnAsPlayerObject(rpcParams.Receive.SenderClientId, true);
     }
+
+    #endregion
 }

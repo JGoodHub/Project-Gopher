@@ -18,20 +18,17 @@ public class HathoraService : MonoBehaviour
         public int MaxPlayers;
     }
 
-    public struct RoomState
-    {
-        public int CurrentPlayers;
-    }
-
     private static HathoraService _singleton;
 
-    public static HathoraService Singleton => _singleton ??= FindObjectOfType<HathoraService>();
+    public static HathoraService Singleton => _singleton ??= FindObjectOfType<HathoraService>(true);
 
     [SerializeField] private HathoraClientConfig _clientConfig;
     [Space]
     [SerializeField] private HathoraClientAuthApi _authApi;
-    [SerializeField] private HathoraClientLobbyApi _lobbyApi;
+    [SerializeField] private HathoraClientLobbyApiExtended _lobbyApi;
     [SerializeField] private HathoraClientRoomApi _roomApi;
+
+    private Configuration _sdkConfiguration;
 
     private string _authToken;
 
@@ -46,11 +43,11 @@ public class HathoraService : MonoBehaviour
 
     private void Start()
     {
-        Configuration sdkConfiguration = new Configuration();
+        _sdkConfiguration = new Configuration();
 
-        _authApi.Init(_clientConfig, sdkConfiguration);
-        _lobbyApi.Init(_clientConfig, sdkConfiguration);
-        _roomApi.Init(_clientConfig, sdkConfiguration);
+        _authApi.Init(_clientConfig, _sdkConfiguration);
+        _lobbyApi.Init(_clientConfig, _sdkConfiguration);
+        _roomApi.Init(_clientConfig, _sdkConfiguration);
 
         _apiReady = true;
     }
@@ -60,6 +57,8 @@ public class HathoraService : MonoBehaviour
         try
         {
             AuthResult clientAuthAsync = await _authApi.ClientAuthAsync();
+
+            _sdkConfiguration.AccessToken = _authToken;
             _authToken = clientAuthAsync.PlayerAuthToken;
 
             Debug.Log($"[{GetType()}]: Auth token set to {_authToken}");
@@ -72,6 +71,8 @@ public class HathoraService : MonoBehaviour
             OnError?.Invoke();
         }
     }
+
+    #region Lobbby Wrappers
 
     public async void GetPublicLobbies(Action<List<Lobby>> OnSuccess = null, Action OnError = null)
     {
@@ -105,20 +106,22 @@ public class HathoraService : MonoBehaviour
         }
     }
 
-    public async void GetLobbyInfo(string roomID, Action<Lobby> OnSuccess = null, Action OnError = null)
+    public async void SetLobbyState(string roomID, SetLobbyStateRequest setLobbyStateRequest, Action<Lobby> OnSuccess = null, Action OnError = null)
     {
         try
         {
-            Lobby lobbyInfoAsync = await _lobbyApi.ClientGetLobbyInfoAsync(roomID);
+            Lobby lobbyAsync = await _lobbyApi.ClientSetLobbyStateAsync(roomID, setLobbyStateRequest);
 
-            OnSuccess?.Invoke(lobbyInfoAsync);
+            OnSuccess?.Invoke(lobbyAsync);
         }
         catch
         {
-            Debug.LogError($"[{GetType()}]: Error when attempting to get lobby info for room {roomID}");
+            Debug.LogError($"[{GetType()}]: Error when attempting to set lobby state");
             OnError?.Invoke();
         }
     }
+
+    #endregion
 
     public async void GetConnectionInfo(string roomID, Action<ConnectionInfoV2> OnSuccess = null, Action OnTimedOut = null, Action OnError = null)
     {
@@ -129,6 +132,7 @@ public class HathoraService : MonoBehaviour
             if (connectionInfoAsync.Status == ConnectionInfoV2.StatusEnum.Active && connectionInfoAsync.ExposedPort != null)
             {
                 OnSuccess?.Invoke(connectionInfoAsync);
+
                 return;
             }
 
