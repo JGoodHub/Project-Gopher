@@ -15,8 +15,16 @@ Mouse - Aim, left-click to fire a chain
 ## Contributers
 
 George - https://github.com/GeorgeHarland
+
 James - https://github.com/JGoodHub
+
 Maisy - https://github.com/Gilgidane
+
 Mitch - https://github.com/PhaulosMS
 
 ## Gallery
+
+![image](https://github.com/JGoodHub/Project-Gopher/assets/37070520/bb68ac28-1ab7-4cb1-9f1e-3df8deaf3560)
+
+![image](https://github.com/JGoodHub/Project-Gopher/assets/37070520/fbbb846f-5e8b-4ba2-8d35-d8e4b17e3bb1)
+
