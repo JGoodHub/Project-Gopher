@@ -12,7 +12,7 @@ W A S D - Move the gopher
 
 Mouse - Aim, left-click to fire a chain
 
-## Contributers
+## Contributors
 
 George - https://github.com/GeorgeHarland
 
